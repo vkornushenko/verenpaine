@@ -1,0 +1,14 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex:1;
+  
+}
+
+.mainInner{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0; /* cancelling padding because of the card */
+}

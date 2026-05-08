@@ -1,0 +1,14 @@
+.footer {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(28, 28, 28);
+}
+
+.footerInner {
+  display: flex;
+}
+
+.footerInner p{
+  opacity: 0.4;
+  /* font-size: 0.9em; */
+}

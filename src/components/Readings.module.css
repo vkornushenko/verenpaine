@@ -1,0 +1,9 @@
+.emptyReadings {
+  text-align: center;
+  opacity: 0.4;
+}
+
+.reading {
+  display: flex;
+  justify-content: space-between;
+}

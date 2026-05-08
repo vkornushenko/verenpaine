@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  justify-content: center;
+  background-color: indigo;
+}
+
+.headerInner{
+  display: flex;
+  justify-content: space-between;
+  /* padding: 0 16px; */
+}

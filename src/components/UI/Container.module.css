@@ -1,0 +1,14 @@
+.container {
+  width: 100%;
+  width: 600px;
+  padding: 16px;
+  /* border:1px dashed green; */
+  margin: 0 8px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 16px;
+    width:100%;
+  }
+}
