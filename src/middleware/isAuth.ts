@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { getToken } from '@/middleware/getToken';
+import { getToken } from '@/lib/getToken';
 import { jwtDecode } from 'jwt-decode';
 // import { refresh } from 'next/cache';
 

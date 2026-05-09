@@ -1,32 +1,32 @@
-import { getReadings } from '@/lib/api';
+// import { getReadings } from '@/lib/api';
 import styles from '@/components/Readings.module.css';
 import Link from 'next/link';
 import DeleteButton from './UI/DeleteButton';
-
-type Reading = {
-  _id: string;
-  date: string;
-  systolic: number;
-  diastolic: number;
-  pulse: number;
-};
+import { getMeasurements } from '@/services/measurements';
+import { redirect } from 'next/navigation';
 
 export default async function Readings() {
-  const readings = await getReadings();
+  const measurements = await getMeasurements();
+  console.log(measurements);
+  if (!measurements) {
+    console.log('no measurements -> redirecting to /login');
+    redirect('/login');
+  }
+  // console.log(measurements);
 
   // skip if no readings
-  if (readings.length > 0) {
+  if (measurements.length > 0) {
     // convert date string to local date format
-    readings.map((reading: Reading) => {
-      const date = new Date(reading.date);
-      reading.date =
-        date.getDate() +
+    measurements.map((m) => {
+      const date = new Date(m.date);
+      m.date =
+        date.getDate().toFixed(0).padStart(2, '0') +
         '.' +
         (date.getMonth() + 1).toFixed(0).padStart(2, '0') +
         '.' +
         date.getFullYear().toString().slice(-2) +
         ' ' +
-        date.getHours() +
+        date.getHours().toFixed(0).padStart(2, '0') +
         ':' +
         date.getMinutes().toFixed(0).padStart(2, '0');
     });
@@ -34,18 +34,35 @@ export default async function Readings() {
 
   return (
     <>
-      {readings.length > 0 ? (
+      {measurements.length > 0 ? (
         <>
           <h2>Recent Readings</h2>
-          {readings.map((reading: Reading) => (
-            <div key={reading._id} className={styles.reading}>
-              <Link href={`/measurement/${reading._id}`}>
-                {reading.date} --- sys: {reading.systolic} dis:{' '}
-                {reading.diastolic}, pulse: {reading.pulse}
-              </Link>
-              <DeleteButton id={reading._id} />
-            </div>
-          ))}
+          <ul className={styles.readingsList}>
+            {measurements.map((m) => (
+              <li key={m._id} className={styles.reading}>
+                <Link
+                  href={`/measurement/${m._id}`}
+                  className={styles.measurementLink}
+                >
+                  <div className={styles.readingContainer}>
+                    <div className={styles.date}>
+                      <p>{m.date}</p>
+                    </div>
+                    <div>
+                      <p>sys: {m.systolic}</p>
+                    </div>
+                    <div>
+                      <p>dis: {m.diastolic}</p>
+                    </div>
+                    <div>
+                      <p>pulse: {m.pulse}</p>
+                    </div>
+                  </div>
+                </Link>
+                <DeleteButton id={m._id} />
+              </li>
+            ))}
+          </ul>
         </>
       ) : (
         <p className={styles.emptyReadings}>no readings found</p>

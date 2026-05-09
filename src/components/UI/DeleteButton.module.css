@@ -1,0 +1,11 @@
+.del {
+  /* color: transparent; */
+  border: 0;
+  background-color: transparent;
+  padding: 0 6px;
+}
+
+.del:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
