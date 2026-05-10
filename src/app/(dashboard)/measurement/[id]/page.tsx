@@ -10,6 +10,7 @@ type Params = Promise<{ id: string }>;
 
 export default async function ReadingPage({ params }: { params: Params }) {
   const { id } = await params;
+  
   // const reading: Reading = await getReadingById(id);
   const measurement = await getMeasurementById(id);
 

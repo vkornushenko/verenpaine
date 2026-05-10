@@ -3,7 +3,8 @@
 import { useActionState } from 'react';
 
 import styles from '@/components/NewReadingForm.module.css';
-import { sendNewReading } from '@/lib/api';
+// import { sendNewReading } from '@/lib/api';
+import { sendMeasurement } from '@/services/measurements';
 
 const initialState = {
   message: '',
@@ -21,7 +22,7 @@ export default function NewReadingForm() {
   // formAction is a function to be called on form submit,
   // pending is a boolean indicating if the action is in progress
   const [state, formAction, pending] = useActionState(
-    sendNewReading,
+    sendMeasurement,
     initialState,
   );
 

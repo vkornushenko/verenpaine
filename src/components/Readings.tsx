@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 
 export default async function Readings() {
   const measurements = await getMeasurements();
-  console.log(measurements);
+  // console.log(measurements);
   if (!measurements) {
     console.log('no measurements -> redirecting to /login');
     redirect('/login');
