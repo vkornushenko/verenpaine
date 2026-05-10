@@ -1,6 +1,7 @@
 'use server';
 
 import { fetchData } from '@/lib/api';
+import { formateDateToIso } from '@/lib/date';
 import { type Measurement, type tagName } from '@/types/types';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -50,6 +51,9 @@ export async function sendMeasurement(prevState: unknown, formData: FormData) {
   const pulse = formData.get('pulse') as string;
   const measurementTime = formData.get('measurement-time') as string;
 
+  // converting date to save in DB
+  const measurementIsoStringDate = formateDateToIso(measurementTime);
+
   // empty fields check
   if (!systolic || !diastolic || !pulse) {
     return { message: 'All fields are required' };
@@ -75,11 +79,11 @@ export async function sendMeasurement(prevState: unknown, formData: FormData) {
       systolic: sysNum,
       diastolic: diaNum,
       pulse: pulseNum,
-      date: measurementTime,
+      date: measurementIsoStringDate,
     }),
   });
 
-  revalidateTag(tagName, {expire: 0});
+  revalidateTag(tagName, { expire: 0 });
 
-  return {message: 'reading saved', newMeasurement}
+  return { message: 'reading saved', newMeasurement };
 }

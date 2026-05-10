@@ -4,6 +4,7 @@ import Link from 'next/link';
 import DeleteButton from './UI/DeleteButton';
 import { getMeasurements } from '@/services/measurements';
 import { redirect } from 'next/navigation';
+import { formatLocalDate } from '@/lib/date';
 
 export default async function Readings() {
   const measurements = await getMeasurements();
@@ -12,33 +13,26 @@ export default async function Readings() {
     console.log('no measurements -> redirecting to /login');
     redirect('/login');
   }
-  // console.log(measurements);
+  console.log(measurements);
 
+  let formattedMeasurements;
   // skip if no readings
   if (measurements.length > 0) {
     // convert date string to local date format
-    measurements.map((m) => {
-      const date = new Date(m.date);
-      m.date =
-        date.getDate().toFixed(0).padStart(2, '0') +
-        '.' +
-        (date.getMonth() + 1).toFixed(0).padStart(2, '0') +
-        '.' +
-        date.getFullYear().toString().slice(-2) +
-        ' ' +
-        date.getHours().toFixed(0).padStart(2, '0') +
-        ':' +
-        date.getMinutes().toFixed(0).padStart(2, '0');
-    });
+    formattedMeasurements = measurements.map((m) => ({
+      ...m,
+      formattedDate: formatLocalDate(m.date),
+    }));
   }
+  console.log(formattedMeasurements);
 
   return (
     <>
-      {measurements.length > 0 ? (
+      {formattedMeasurements && formattedMeasurements.length > 0 ? (
         <>
           <h2>Recent Readings</h2>
           <ul className={styles.readingsList}>
-            {measurements.map((m) => (
+            {formattedMeasurements.map((m) => (
               <li key={m._id} className={styles.reading}>
                 <Link
                   href={`/measurement/${m._id}`}
@@ -46,7 +40,7 @@ export default async function Readings() {
                 >
                   <div className={styles.readingContainer}>
                     <div className={styles.date}>
-                      <p>{m.date}</p>
+                      <p>{m.formattedDate}</p>
                     </div>
                     <div>
                       <p>sys: {m.systolic}</p>
