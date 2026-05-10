@@ -5,6 +5,7 @@ import DeleteButton from './UI/DeleteButton';
 import { getMeasurements } from '@/services/measurements';
 import { redirect } from 'next/navigation';
 import { formatLocalDate } from '@/lib/date';
+import RefreshButton from './UI/RefreshButton';
 
 export default async function Readings() {
   const measurements = await getMeasurements();
@@ -30,7 +31,10 @@ export default async function Readings() {
     <>
       {formattedMeasurements && formattedMeasurements.length > 0 ? (
         <>
-          <h2>Recent Readings</h2>
+          <div className={styles.header}>
+            <h2>Recent Readings</h2>
+            <RefreshButton tagName={'readings'}/>
+          </div>
           <ul className={styles.readingsList}>
             {formattedMeasurements.map((m) => (
               <li key={m._id} className={styles.reading}>

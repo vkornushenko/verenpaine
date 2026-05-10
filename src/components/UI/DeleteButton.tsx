@@ -1,6 +1,5 @@
 'use client';
 
-// import { deleteReadingById } from '@/lib/api';
 import styles from '@/components/UI/DeleteButton.module.css'
 import { deleteMeasurementById } from '@/services/measurements';
 import { usePathname } from 'next/navigation'

@@ -87,3 +87,7 @@ export async function sendMeasurement(prevState: unknown, formData: FormData) {
 
   return { message: 'reading saved', newMeasurement };
 }
+
+export async function refreshDataByTagName(tagName: tagName){
+  revalidateTag(tagName, { expire: 0 });
+}
