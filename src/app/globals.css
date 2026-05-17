@@ -88,3 +88,7 @@ form button{
 form button:hover {
   opacity: 0.9;
 }
+
+form button:disabled{
+  opacity: 0.2;
+}

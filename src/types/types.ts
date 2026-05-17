@@ -12,6 +12,12 @@ export type Measurement = {
   pulse: number;
 };
 
+export type MeasurementFormState = {
+  ok: boolean;
+  message: string;
+  data: Measurement | null;
+}
+
 export type ApiResponse<T> = {
   data: T;
 }

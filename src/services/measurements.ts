@@ -1,8 +1,7 @@
 'use server';
 
 import { fetchData } from '@/lib/api';
-import { formateDateToIso } from '@/lib/date';
-import { type Measurement, type tagName } from '@/types/types';
+import { MeasurementFormState, type Measurement, type tagName } from '@/types/types';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -34,9 +33,11 @@ export async function deleteMeasurementById(id: string, path: string) {
     method: 'DELETE',
   });
 
-  tagsArray.map((tag) => {
-    revalidateTag(tag, { expire: 0 });
-  });
+  // tagsArray.map((tag) => {
+  //   revalidateTag(tag, { expire: 0 });
+  // });
+
+  tagsArray.forEach((tag) => revalidateTag(tag, { expire: 0 }));
 
   // check if user was at measurement/[id] page
   // because measurement/[id] page is not existing anymore
@@ -45,18 +46,20 @@ export async function deleteMeasurementById(id: string, path: string) {
   }
 }
 
-export async function sendMeasurement(prevState: unknown, formData: FormData) {
+export async function sendMeasurement(prevState: unknown, formData: FormData): Promise<MeasurementFormState> {
   const systolic = formData.get('systolic') as string;
   const diastolic = formData.get('diastolic') as string;
   const pulse = formData.get('pulse') as string;
-  const measurementTime = formData.get('measurement-time') as string;
+  const measurementTimeUTC = formData.get('measurement-time-UTC') as string;
+  console.log(measurementTimeUTC);
 
-  // converting date to save in DB
-  const measurementIsoStringDate = formateDateToIso(measurementTime);
+  // // converting date to UTC (-3h from FI) to save in DB
+  // const measurementIsoStringDate = formateDateToIso(measurementTime);
+  // console.log(measurementIsoStringDate);
 
   // empty fields check
-  if (!systolic || !diastolic || !pulse) {
-    return { message: 'All fields are required' };
+  if (!systolic || !diastolic || !pulse || !measurementTimeUTC) {
+    return { ok: false, message: 'All fields are required', data: null };
   }
 
   // convert to number
@@ -66,7 +69,7 @@ export async function sendMeasurement(prevState: unknown, formData: FormData) {
 
   // number check
   if (isNaN(sysNum) || isNaN(diaNum) || isNaN(pulseNum)) {
-    return { message: 'All fields must be valid numbers' };
+    return { ok: false, message: 'All measurement fields must be valid numbers', data: null };
   }
 
   // tag to revalidate
@@ -79,15 +82,15 @@ export async function sendMeasurement(prevState: unknown, formData: FormData) {
       systolic: sysNum,
       diastolic: diaNum,
       pulse: pulseNum,
-      date: measurementIsoStringDate,
+      date: measurementTimeUTC,
     }),
   });
 
   revalidateTag(tagName, { expire: 0 });
 
-  return { message: 'reading saved', newMeasurement };
+  return { ok: true, message: 'reading saved', data: newMeasurement };
 }
 
-export async function refreshDataByTagName(tagName: tagName){
+export async function refreshDataByTagName(tagName: tagName) {
   revalidateTag(tagName, { expire: 0 });
 }

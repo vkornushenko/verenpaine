@@ -1,21 +1,18 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useRef } from 'react';
 
-import styles from '@/components/NewReadingForm.module.css';
 // import { sendNewReading } from '@/lib/api';
 import { sendMeasurement } from '@/services/measurements';
+import { formatDateTimeLocal } from '@/lib/date';
+import { MeasurementFormState } from '@/types/types';
+// import Message from '@/components/UI/Message';
 
-const initialState = {
+const initialState: MeasurementFormState = {
+  ok: false,
   message: '',
   data: null,
 };
-
-function formatDateTimeLocal(date: Date) {
-  const pad = (n: number) => String(n).padStart(2, '0');
-
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
 
 export default function NewReadingForm() {
   // state is a data returned from the server action,
@@ -26,26 +23,49 @@ export default function NewReadingForm() {
     initialState,
   );
 
+  console.log(state);
+
+  // input date to utc
+  const utcInputRef = useRef<HTMLInputElement>(null);
   const now = new Date();
+  function handleDateChange(value: string) {
+    const utc = new Date(value).toISOString();
+    if (utcInputRef.current) {
+      utcInputRef.current.value = utc;
+    }
+  }
 
   return (
     <>
       <h2>Enter New Reading</h2>
       <form action={formAction}>
-        <input type='text' placeholder='Systolic' name='systolic' />
-        <input type='text' placeholder='Diastolic' name='diastolic' />
-        <input type='text' placeholder='Heart Rate' name='pulse' />
+        {/* <label htmlFor='systolic'>Systolic</label> */}
+        <input type='number' placeholder='Systolic' name='systolic' />
+        <input type='number' placeholder='Diastolic' name='diastolic' />
+        <input type='number' placeholder='Heart Rate' name='pulse' />
+
         <input
           type='datetime-local'
           id='measurement-time'
-          name='measurement-time'
+          // name='measurement-time'
           defaultValue={formatDateTimeLocal(now)}
+          onChange={(e) => {
+            handleDateChange(e.target.value);
+          }}
         />
+
+        <input
+          type='hidden'
+          name='measurement-time-UTC'
+          ref={utcInputRef}
+          defaultValue={now.toISOString()}
+        />
+
         <button type='submit' disabled={pending}>
           {pending ? 'Saving...' : 'Save'}
         </button>
       </form>
-      {state.message && <p className={styles.infoMessage}>{state.message}</p>}
+      {/* <Message state={state} key={crypto.randomUUID()}/> */}
     </>
   );
 }

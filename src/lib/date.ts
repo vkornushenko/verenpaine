@@ -1,8 +1,8 @@
-export function formateDateToIso(unformattedDate: string) {
-  const date = new Date(unformattedDate);
-  const iso = date.toISOString();
-  return iso;
-}
+// export function formateDateToIso(unformattedDate: string) {
+//   const date = new Date(unformattedDate);
+//   const iso = date.toISOString();
+//   return iso;
+// }
 
 export function formatLocalDate(
   isoDate: string
@@ -17,4 +17,9 @@ export function formatLocalDate(
       minute: '2-digit',
     }
   ).format(new Date(isoDate));
+}
+
+export function formatDateTimeLocal(date: Date) {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }

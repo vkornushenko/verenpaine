@@ -7,6 +7,7 @@ export async function getUser() {
   // TODO change tag 'readings' to 'measurements' later
   return fetchData<User>(`/api/v1/auth/user`, {
     method: 'GET',
-    next: { tags: [tagName]}
+    next: { tags: [tagName]},
+    cache: 'force-cache'
   });
 }

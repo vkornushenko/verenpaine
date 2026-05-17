@@ -7,6 +7,9 @@ export async function fetchData<T>(
 ): Promise<T> {
   const token = await getToken();
 
+  // console.log('options')
+  // console.log(options);
+
   const response = await fetch(`${process.env.API_URL}${endpoint}`, {
     ...options,
     headers: {
