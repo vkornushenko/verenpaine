@@ -1,9 +1,9 @@
 import styles from '@/components/Readings.module.css';
 import Link from 'next/link';
-import DeleteButton from './UI/DeleteButton';
+import DeleteButton from './UI/buttons/DeleteButton';
 import { getMeasurements } from '@/services/measurements';
 import { redirect } from 'next/navigation';
-import RefreshButton from '@/components/UI/RefreshButton';
+import RefreshButton from '@/components/UI/buttons/RefreshButton';
 import DateComponent from '@/components/UI/DateComponent';
 
 export default async function Readings() {

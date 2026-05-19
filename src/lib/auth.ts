@@ -89,13 +89,16 @@ export async function signup(prevState: unknown, formData: FormData) {
   }
 
   try {
-    const response = await fetch(`${process.env.API_URL}/api/v1/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${process.env.API_URL}/api/v1/auth/register`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
       },
-      body: JSON.stringify({ name, email, password }),
-    });
+    );
 
     console.log(response);
 
@@ -120,4 +123,10 @@ export async function signup(prevState: unknown, formData: FormData) {
   }
   console.log('User created successfully -> Redirecting to main page');
   redirect('/');
+}
+
+export async function logOut() {
+  const cookieStore = await cookies();
+  cookieStore.delete('token');
+  redirect('/login');
 }

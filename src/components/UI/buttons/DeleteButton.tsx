@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '@/components/UI/DeleteButton.module.css'
+import styles from '@/components/UI/buttons/DeleteButton.module.css'
 import { deleteMeasurementById } from '@/services/measurements';
 import { usePathname } from 'next/navigation'
 

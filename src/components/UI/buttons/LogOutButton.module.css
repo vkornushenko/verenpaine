@@ -1,0 +1,11 @@
+.logOutBtn {
+  /* color: transparent; */
+  border: 0;
+  background-color: transparent;
+  padding: 0 6px;
+}
+
+.logOutBtn:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}

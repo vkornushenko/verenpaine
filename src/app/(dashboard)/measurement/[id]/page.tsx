@@ -3,7 +3,7 @@ import Card from '@/components/UI/Card';
 import Link from 'next/link';
 
 import styles from '@/app/(dashboard)/measurement/[id]/page.module.css';
-import DeleteButton from '@/components/UI/DeleteButton';
+import DeleteButton from '@/components/UI/buttons/DeleteButton';
 import { getMeasurementById } from '@/services/measurements';
 
 type Params = Promise<{ id: string }>;

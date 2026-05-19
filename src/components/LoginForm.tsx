@@ -1,11 +1,8 @@
 'use client';
 
-import styles from '@/components/LoginForm.module.css';
-
 import { useActionState } from 'react';
 import { redirect } from 'next/navigation';
 import { login } from '@/lib/auth';
-import Link from 'next/link';
 
 export default function LoginForm() {
   const initialState = {
@@ -26,17 +23,18 @@ export default function LoginForm() {
     <>
       <h2>Login</h2>
       <form action={formAction}>
-        <input type='email' name='email' placeholder='Email' autoComplete='email'/>
+        <input
+          type='email'
+          name='email'
+          placeholder='Email'
+          autoComplete='email'
+        />
         <input type='password' name='password' placeholder='Password' />
         <button type='submit' disabled={pending}>
           {pending ? 'Logging in...' : 'Login'}
         </button>
         {state.message && <p>{state.message}</p>}
       </form>
-      <p className={styles.signupLink}>
-        If you don&apos;t have an account,
-        <Link href='/signup'>&nbsp;sign up</Link>
-      </p>
     </>
   );
 }

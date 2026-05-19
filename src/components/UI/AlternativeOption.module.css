@@ -1,0 +1,8 @@
+.alternativeLink {
+  display: flex;
+  align-self: center;
+  gap: 8px;
+}
+.alternativeLink a {
+  color: var(--primary-text);
+}
