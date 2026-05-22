@@ -71,8 +71,8 @@ export async function login(prevState: unknown, formData: FormData) {
     // Handle login error (e.g., show error message to user)
     return { message: 'Error during login', data: null };
   }
-  return { message: 'Login successful', data: null };
-  // redirect('/');
+  // return { message: 'Login successful', data: null };
+  redirect('/');
 }
 
 export async function signup(prevState: unknown, formData: FormData) {
