@@ -5,29 +5,29 @@ import { MeasurementFormState, type Measurement, type tagName } from '@/types/ty
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function getMeasurements() {
+export async function getReadings() {
   const tagName: tagName = 'readings';
   // TODO change tag 'readings' to 'measurements' later
   return fetchData<Measurement[]>('/api/v1/measurements/', {
     method: 'GET',
     next: { tags: [tagName] },
-    cache: 'force-cache',
+    // cache: 'force-cache',
   });
 }
 
 export async function getMeasurementById(id: string) {
-  const tagName: tagName = 'reading';
+  // const tagName: tagName = 'reading';
   // TODO change tag 'reading' to 'measurement' later
   return fetchData<Measurement>(`/api/v1/measurements/${id}`, {
     method: 'GET',
-    next: { tags: [tagName] },
-    cache: 'force-cache',
+    // next: { tags: [tagName] },
+    // cache: 'force-cache',
   });
 }
 
 export async function deleteMeasurementById(id: string, path: string) {
   // array of tags to revalidate after deleting complition
-  const tagsArray: tagName[] = ['reading', 'readings'];
+  // const tagsArray: tagName[] = ['reading', 'readings'];
 
   await fetchData<void>(`/api/v1/measurements/${id}`, {
     method: 'DELETE',
@@ -37,7 +37,8 @@ export async function deleteMeasurementById(id: string, path: string) {
   //   revalidateTag(tag, { expire: 0 });
   // });
 
-  tagsArray.forEach((tag) => revalidateTag(tag, { expire: 0 }));
+  // tagsArray.forEach((tag) => revalidateTag(tag, { expire: 0 }));
+  revalidateTag('readings', { expire: 0 });
 
   // check if user was at measurement/[id] page
   // because measurement/[id] page is not existing anymore
@@ -51,7 +52,7 @@ export async function sendMeasurement(prevState: unknown, formData: FormData): P
   const diastolic = formData.get('diastolic') as string;
   const pulse = formData.get('pulse') as string;
   const measurementTimeUTC = formData.get('measurement-time-UTC') as string;
-  console.log(measurementTimeUTC);
+  // console.log(measurementTimeUTC);
 
   // // converting date to UTC (-3h from FI) to save in DB
   // const measurementIsoStringDate = formateDateToIso(measurementTime);
@@ -72,9 +73,7 @@ export async function sendMeasurement(prevState: unknown, formData: FormData): P
     return { ok: false, message: 'All measurement fields must be valid numbers', data: null };
   }
 
-  // tag to revalidate
-  const tagName: tagName = 'readings';
-
+  
   const newMeasurement = await fetchData<Measurement>('/api/v1/measurements', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -85,12 +84,14 @@ export async function sendMeasurement(prevState: unknown, formData: FormData): P
       date: measurementTimeUTC,
     }),
   });
-
+  
+  // tag to revalidate
+  const tagName: tagName = 'readings';
   revalidateTag(tagName, { expire: 0 });
 
   return { ok: true, message: 'reading saved', data: newMeasurement };
 }
 
-export async function refreshDataByTagName(tagName: tagName) {
-  revalidateTag(tagName, { expire: 0 });
-}
+// export async function refreshDataByTagName(tagName: tagName) {
+//   revalidateTag(tagName, { expire: 0 });
+// }

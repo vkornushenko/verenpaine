@@ -1,42 +1,17 @@
-.header{
+.header {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.emptyReadings {
+.uxMessage {
   text-align: center;
   opacity: 0.4;
 }
 
-.measurementLink{
-  display: flex;
-}
-
-.readingsList{
+.readingsList {
   display: flex;
   flex-direction: column;
   font-size: 14px;
   /* gap:6px; */
-}
-
-.reading {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--card-border);
-  padding: 6px 0;
-}
-.reading:last-child{
-  border: 0;
-}
-
-.readingContainer{
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  font-family: monospace;
-}
-
-.date{
-  padding-right: 22px;
 }

@@ -16,6 +16,7 @@ const options: Intl.DateTimeFormatOptions = {
 };
 
 export default function DateComponent({ date }: DateComponentProps) {
+  console.count('DateComp rendered');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

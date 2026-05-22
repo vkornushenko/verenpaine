@@ -1,56 +1,63 @@
-import styles from '@/components/Readings.module.css';
-import Link from 'next/link';
-import DeleteButton from './UI/buttons/DeleteButton';
-import { getMeasurements } from '@/services/measurements';
-import { redirect } from 'next/navigation';
-import RefreshButton from '@/components/UI/buttons/RefreshButton';
-import DateComponent from '@/components/UI/DateComponent';
+'use client';
 
-export default async function Readings() {
-  const measurements = await getMeasurements();
-  // console.log(measurements);
-  if (!measurements) {
-    console.log('no measurements -> redirecting to /login');
-    redirect('/login');
+import styles from '@/components/Readings.module.css';
+import { type Measurement } from '@/types/types';
+import Reading from './Reading';
+import { useEffect, useState } from 'react';
+
+type ReadingsProps = {
+  readings: Measurement[];
+};
+
+const options: Intl.DateTimeFormatOptions = {
+  day: '2-digit',
+  month: '2-digit',
+  year: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+};
+
+export default function Readings({ readings }: ReadingsProps) {
+  const [localReadings, setLocalReadings] = useState<Measurement[] | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const localReadings = readings.map((reading) => ({
+      ...reading,
+      date: new Date(reading.date).toLocaleString(undefined, options),
+    }));
+    // eslint-disable-next-line
+    setLocalReadings(localReadings);
+  }, [readings]);
+
+  console.count('Readings rendered');
+  // console.log(localReadings);
+
+  // conditional message
+  let uxMessage;
+  if (!localReadings) {
+    uxMessage = 'Loading readings...';
+  }
+  if (localReadings && localReadings.length === 0) {
+    uxMessage = 'No readings found';
   }
 
   return (
     <>
-      {measurements.length > 0 ? (
+      {localReadings && localReadings.length > 0 ? (
         <>
           <div className={styles.header}>
             <h2>Recent Readings</h2>
-            <RefreshButton tagName={'readings'} />
           </div>
           <ul className={styles.readingsList}>
-            {measurements.map((m) => (
-              <li key={m._id} className={styles.reading}>
-                <Link
-                  href={`/measurement/${m._id}`}
-                  className={styles.measurementLink}
-                >
-                  <div className={styles.readingContainer}>
-                    <div className={styles.date}>
-                      <DateComponent date={m.date} />
-                    </div>
-                    <div>
-                      <p>sys: {m.systolic}</p>
-                    </div>
-                    <div>
-                      <p>dis: {m.diastolic}</p>
-                    </div>
-                    <div>
-                      <p>pulse: {m.pulse}</p>
-                    </div>
-                  </div>
-                </Link>
-                <DeleteButton id={m._id} />
-              </li>
+            {localReadings.map((reading) => (
+              <Reading key={reading._id} reading={reading} />
             ))}
           </ul>
         </>
       ) : (
-        <p className={styles.emptyReadings}>no readings found</p>
+        <p className={styles.uxMessage}>{uxMessage}</p>
       )}
     </>
   );

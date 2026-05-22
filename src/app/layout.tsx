@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -31,9 +31,9 @@ export default async function RootLayout({
   return (
     <html lang='en' className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <Header />
-        <Main>{children}</Main>
-        <Footer/>
+          <Header />
+          <Main>{children}</Main>
+          <Footer />
       </body>
     </html>
   );

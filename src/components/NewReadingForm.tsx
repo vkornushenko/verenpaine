@@ -15,6 +15,7 @@ const initialState: MeasurementFormState = {
 };
 
 export default function NewReadingForm() {
+  console.count('NewReadingForm rendered');
   // state is a data returned from the server action,
   // formAction is a function to be called on form submit,
   // pending is a boolean indicating if the action is in progress
@@ -23,7 +24,7 @@ export default function NewReadingForm() {
     initialState,
   );
 
-  console.log(state);
+  // console.log(state);
 
   // input date to utc
   const utcInputRef = useRef<HTMLInputElement>(null);
@@ -65,7 +66,6 @@ export default function NewReadingForm() {
           {pending ? 'Saving...' : 'Save'}
         </button>
       </form>
-      {/* <Message state={state} key={crypto.randomUUID()}/> */}
     </>
   );
 }

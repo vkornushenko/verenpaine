@@ -6,8 +6,11 @@ export default async function AccountPage() {
   const user = await getUser();
   return (
     <Card>
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
+      <h2>Account</h2>
+      <div>
+        <p>Name: {user.name}</p>
+        <p>Email: {user.email}</p>
+      </div>
       <LogOutButton />
     </Card>
   );

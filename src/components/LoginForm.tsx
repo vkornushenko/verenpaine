@@ -1,10 +1,14 @@
 'use client';
 
-import { useActionState } from 'react';
-import { redirect } from 'next/navigation';
+// import { useRouter } from 'next/navigation'
+import { useActionState, useEffect } from 'react';
+// import { redirect } from 'next/navigation';
 import { login } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
+  const router = useRouter();
+
   const initialState = {
     message: '',
     data: null,
@@ -15,9 +19,13 @@ export default function LoginForm() {
   // pending is a boolean indicating if the action is in progress
   const [state, formAction, pending] = useActionState(login, initialState);
 
-  if (state.message === 'Login successful') {
-    redirect('/'); // Redirect to home page on successful login
-  }
+  useEffect(() => {
+    if (state.message === 'Login successful') {
+      console.log('state msg is successful -> pushing to /')
+      router.push('/');
+      // redirect('/'); // Redirect to home page on successful login
+    }
+  }, [state.message, router]);
 
   return (
     <>
@@ -33,7 +41,9 @@ export default function LoginForm() {
         <button type='submit' disabled={pending}>
           {pending ? 'Logging in...' : 'Login'}
         </button>
-        {state.message && <p>{state.message}</p>}
+        {state.message && (
+          <p>{state.message}. You can navigate to main page.</p>
+        )}
       </form>
     </>
   );
