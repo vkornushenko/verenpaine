@@ -1,5 +1,4 @@
 import styles from '@/components/Reading.module.css';
-// import DateComponent from '@/components/UI/DateComponent';
 import DeleteButton from '@/components/UI/buttons/DeleteButton';
 import Link from 'next/link';
 import { Measurement } from '@/types/types';

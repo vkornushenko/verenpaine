@@ -10,6 +10,7 @@ export default async function Home() {
   // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
   // console.log(new Date().toString());
   const readings = await getReadings();
+  // console.log(readings)
 
   return (
     <>

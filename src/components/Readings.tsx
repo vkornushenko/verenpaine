@@ -2,8 +2,8 @@
 
 import styles from '@/components/Readings.module.css';
 import { type Measurement } from '@/types/types';
-import Reading from './Reading';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type ReadingsProps = {
   readings: Measurement[];
@@ -11,13 +11,14 @@ type ReadingsProps = {
 
 const options: Intl.DateTimeFormatOptions = {
   day: '2-digit',
-  month: '2-digit',
-  year: '2-digit',
+  month: 'short',
+  // year: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
 };
 
 export default function Readings({ readings }: ReadingsProps) {
+  const router = useRouter();
   const [localReadings, setLocalReadings] = useState<Measurement[] | null>(
     null,
   );
@@ -32,7 +33,6 @@ export default function Readings({ readings }: ReadingsProps) {
   }, [readings]);
 
   console.count('Readings rendered');
-  // console.log(localReadings);
 
   // conditional message
   let uxMessage;
@@ -43,17 +43,40 @@ export default function Readings({ readings }: ReadingsProps) {
     uxMessage = 'No readings found';
   }
 
+  function openReadingHandler(id: string) {
+    router.push(`/measurement/${id}`);
+  }
+
   return (
     <>
       {localReadings && localReadings.length > 0 ? (
         <>
-          <div className={styles.header}>
-            <h2>Recent Readings</h2>
-          </div>
-          <ul className={styles.readingsList}>
+          <h2>Recent Readings</h2>
+          <ul className={styles.readings_table}>
+            <li className={`${styles.row} ${styles.header}`}>
+              <span>date / time</span>
+              <span className={styles.value}>sys</span>
+              <span className={styles.value}>dis</span>
+              <span className={styles.value}>pulse</span>
+            </li>
             {localReadings.map((reading) => (
-              <Reading key={reading._id} reading={reading} />
+              <li
+                key={reading._id}
+                className={`${styles.row} ${styles.reading}`}
+                onClick={() => {
+                  openReadingHandler(reading._id);
+                }}
+              >
+                <span>{reading.date}</span>
+                <span className={styles.value}>{reading.systolic}</span>
+                <span className={styles.value}>{reading.diastolic}</span>
+                <span className={styles.value}>{reading.pulse}</span>
+              </li>
             ))}
+
+            {/* {localReadings.map((reading) => (
+              <Reading key={reading._id} reading={reading} />
+            ))} */}
           </ul>
         </>
       ) : (

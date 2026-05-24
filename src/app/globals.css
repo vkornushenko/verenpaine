@@ -98,3 +98,7 @@ form button:hover, button:hover {
 form button:disabled, button:disabled {
   opacity: 0.2;
 }
+
+/* span{
+  border: 1px dotted rgb(185, 185, 185);
+} */

@@ -1,17 +1,43 @@
-.header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
 .uxMessage {
   text-align: center;
   opacity: 0.4;
 }
 
-.readingsList {
-  display: flex;
-  flex-direction: column;
+.readings_table {
+  display: grid;
   font-size: 14px;
-  /* gap:6px; */
+}
+
+.row {
+  display: grid;
+  /* gap:25px; */
+  /* border: 1px solid white; */
+  grid-template-columns: 3fr repeat(3, minmax(60px, max-content));
+  border-bottom: 1px solid var(--card-border);
+  padding: 8px 0;
+  font-family: monospace;
+}
+
+.reading:hover{
+  /* text-shadow: 0px 0px 32px var(--foreground); */
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.row:last-child, .row:first-child{
+  border: 0;
+}
+
+.row span{
+  align-self: center;
+}
+
+.readings_table .header {
+  /* font-weight: bold; */
+  padding: 0 0 16px 0;
+  opacity: 0.7;
+}
+
+.value{
+  justify-self: center;
 }
