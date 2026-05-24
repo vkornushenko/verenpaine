@@ -15,7 +15,7 @@ export default function WakingUpServer() {
           </div>
           <div>
             <p>
-              This may take up to 10 seconds. Delay occurs because the app
+              This may take up to 30 seconds. Delay occurs because the app
               is hosted on a free-tier service.
             </p>
           </div>

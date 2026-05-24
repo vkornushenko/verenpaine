@@ -28,7 +28,7 @@
   height: 8px;
   background: linear-gradient(90deg, #8a2be2, #c084fc);
   animation:
-    fillBar 10s linear forwards,
+    fillBar 30s linear forwards,
     pulse 2s infinite;
 }
 

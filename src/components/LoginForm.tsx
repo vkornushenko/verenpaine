@@ -33,6 +33,7 @@ export default function LoginForm() {
         </button>
       </form>
       {pending && showColdStartMsg && <WakingUpServer />}
+      {/* <WakingUpServer /> */}
     </>
   );
 }
