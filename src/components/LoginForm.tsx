@@ -1,14 +1,11 @@
 'use client';
 
-// import { useRouter } from 'next/navigation'
 import { useActionState } from 'react';
-// import { redirect } from 'next/navigation';
 import { login } from '@/lib/auth';
-// import { useRouter } from 'next/navigation';
+import { useDelayedBoolean } from '@/hooks/useDelayedBoolean';
+import WakingUpServer from './UI/WakingUpServer';
 
 export default function LoginForm() {
-  // const router = useRouter();
-
   const initialState = {
     message: '',
     data: null,
@@ -18,14 +15,7 @@ export default function LoginForm() {
   // formAction is a function to be called on form submit,
   // pending is a boolean indicating if the action is in progress
   const [state, formAction, pending] = useActionState(login, initialState);
-
-  // useEffect(() => {
-  //   if (state.message === 'Login successful') {
-  //     // console.log('state msg is successful -> pushing to /')
-  //     router.push('/');
-  //     // redirect('/'); // Redirect to home page on successful login
-  //   }
-  // }, [state.message, router]);
+  const showColdStartMsg = useDelayedBoolean(pending, 2000);
 
   return (
     <>
@@ -41,10 +31,8 @@ export default function LoginForm() {
         <button type='submit' disabled={pending}>
           {pending ? 'Logging in...' : 'Login'}
         </button>
-        {/* {state.message && (
-          <p>{state.message}. You can navigate to main page.</p>
-        )} */}
       </form>
+      {pending && showColdStartMsg && <WakingUpServer />}
     </>
   );
 }
