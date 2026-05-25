@@ -2,8 +2,9 @@
 
 import { useActionState } from 'react';
 import { login } from '@/lib/auth';
-// import { useDelayedBoolean } from '@/hooks/useDelayedBoolean';
-// import WakingUpServer from './UI/WakingUpServer';
+import { useDelayedBoolean } from '@/hooks/useDelayedBoolean';
+import WakingUpServer from './UI/WakingUpServer';
+import { COLD_START_DELAY } from '@/constants/delay';
 
 export default function LoginForm() {
   const initialState = {
@@ -16,7 +17,7 @@ export default function LoginForm() {
   // pending is a boolean indicating if the action is in progress
   const [state, formAction, pending] = useActionState(login, initialState);
 
-  // const showColdStartMsg = useDelayedBoolean(pending, 2000);
+  const showColdStartMsg = useDelayedBoolean(pending, COLD_START_DELAY);
 
   return (
     <>
@@ -33,7 +34,7 @@ export default function LoginForm() {
           {pending ? 'Logging in...' : 'Login'}
         </button>
       </form>
-      {/* {pending && showColdStartMsg && <WakingUpServer />} */}
+      {pending && showColdStartMsg && <WakingUpServer />}
       {/* <WakingUpServer /> */}
     </>
   );

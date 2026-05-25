@@ -2,11 +2,13 @@
 
 import { useActionState, useRef } from 'react';
 
-// import { sendNewReading } from '@/lib/api';
 import { sendMeasurement } from '@/services/measurements';
 import { formatDateTimeLocal } from '@/lib/date';
 import { MeasurementFormState } from '@/types/types';
-// import Message from '@/components/UI/Message';
+// cold start UX
+import { useDelayedBoolean } from '@/hooks/useDelayedBoolean';
+import WakingUpServer from './UI/WakingUpServer';
+import { COLD_START_DELAY } from '@/constants/delay';
 
 const initialState: MeasurementFormState = {
   ok: false,
@@ -23,6 +25,8 @@ export default function NewReadingForm() {
     sendMeasurement,
     initialState,
   );
+
+  const showColdStartMsg = useDelayedBoolean(pending, COLD_START_DELAY);
 
   // console.log(state);
 
@@ -66,6 +70,7 @@ export default function NewReadingForm() {
           {pending ? 'Saving...' : 'Save'}
         </button>
       </form>
+      {pending && showColdStartMsg && <WakingUpServer />}
     </>
   );
 }

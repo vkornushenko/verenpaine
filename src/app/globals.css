@@ -93,6 +93,7 @@ form button, button {
 
 form button:hover, button:hover {
   opacity: 0.9;
+  cursor: pointer;
 }
 
 form button:disabled, button:disabled {

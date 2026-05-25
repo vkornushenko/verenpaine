@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { COLD_START_DELAY } from '@/constants/delay';
 
 import WakingUpServer from '@/components/UI/WakingUpServer';
 
@@ -10,7 +11,7 @@ export default function Loading() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShow(true);
-    }, 3000);
+    }, COLD_START_DELAY);
 
     return () => clearTimeout(timer);
   }, []);

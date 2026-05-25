@@ -26,7 +26,7 @@ export default async function ReadingPage({ params }: { params: Params }) {
           <div className={styles.measurementNav}>
             {/* <Link href=''>edit</Link> */}
 
-            delete → <DeleteButton id={measurement._id} />
+            <DeleteButton id={measurement._id} />
           </div>
         </>
       ) : (
