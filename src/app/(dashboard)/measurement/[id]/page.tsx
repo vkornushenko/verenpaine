@@ -1,6 +1,4 @@
 import Card from '@/components/UI/Card';
-// import { getReadingById } from '@/lib/api';
-import Link from 'next/link';
 
 import styles from '@/app/(dashboard)/measurement/[id]/page.module.css';
 import DeleteButton from '@/components/UI/buttons/DeleteButton';
@@ -11,7 +9,6 @@ type Params = Promise<{ id: string }>;
 export default async function ReadingPage({ params }: { params: Params }) {
   const { id } = await params;
   
-  // const reading: Reading = await getReadingById(id);
   const measurement = await getMeasurementById(id);
 
   return (

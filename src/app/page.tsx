@@ -2,7 +2,7 @@ import Readings from '@/components/Readings';
 import NewReadingForm from '@/components/NewReadingForm';
 import Card from '@/components/UI/Card';
 import { getReadings } from '@/services/measurements';
-import { Activity, Suspense } from 'react';
+import { Activity } from 'react';
 // import { isAuth } from '@/middleware/isAuth';
 
 export default async function Home() {
@@ -19,9 +19,7 @@ export default async function Home() {
       </Card>
       <Activity mode={readings ? 'visible' : 'hidden'}>
         <Card>
-          <Suspense fallback={<p>loading...</p>}>
-            <Readings readings={readings} />
-          </Suspense>
+          <Readings readings={readings} />
         </Card>
       </Activity>
     </>
