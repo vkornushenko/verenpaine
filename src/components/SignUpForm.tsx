@@ -2,6 +2,9 @@
 
 import { signup } from '@/lib/auth';
 import { useActionState } from 'react';
+import { useDelayedBoolean } from '@/hooks/useDelayedBoolean';
+import WakingUpServer from './UI/WakingUpServer';
+import { COLD_START_DELAY } from '@/constants/delay';
 
 export default function SignUpForm() {
   // const pending = false; // TODO: implement pending state
@@ -15,6 +18,9 @@ export default function SignUpForm() {
   // pending is a boolean indicating if the action is in progress
   const [state, formAction, pending] = useActionState(signup, initialState);
 
+  const showColdStartMsg = useDelayedBoolean(pending, COLD_START_DELAY);
+
+
   return (
     <>
       <h2>Create account</h2>
@@ -27,8 +33,7 @@ export default function SignUpForm() {
         </button>
       {state.message && <p>{state.message}.</p>}
       </form>
-
-      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
+      {pending && showColdStartMsg && <WakingUpServer />}
     </>
   );
 }
