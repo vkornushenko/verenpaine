@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useTransition } from 'react';
 import WakingUpServer from '../WakingUpServer';
 import { COLD_START_DELAY } from '@/constants/delay';
+import { MdDeleteForever } from 'react-icons/md';
 
 type DeleteButtonProps = {
   id: string;
@@ -18,7 +19,7 @@ export default function DeleteButton({ id }: DeleteButtonProps) {
 
   const showColdStartMsg = useDelayedBoolean(isPending, COLD_START_DELAY);
 
-  const handleDelete = () => {
+  const handleDelete = async() => {
     startTransition(async () => {
       await deleteMeasurementById(id, path);
     });
@@ -26,8 +27,9 @@ export default function DeleteButton({ id }: DeleteButtonProps) {
 
   return (
     <>
-      <button onClick={handleDelete} className={styles.del}>
-        {isPending ? '🗑️ deleting...' : '🗑️ delete'}
+      <button onClick={handleDelete} className={styles.del} disabled={isPending}>
+        <MdDeleteForever/>
+        {isPending ? 'Deleting...' : 'Delete'}
       </button>
       {isPending && showColdStartMsg && <WakingUpServer />}
     </>

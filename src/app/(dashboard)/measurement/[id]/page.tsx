@@ -8,25 +8,28 @@ type Params = Promise<{ id: string }>;
 
 export default async function ReadingPage({ params }: { params: Params }) {
   const { id } = await params;
-  
+
   const measurement = await getMeasurementById(id);
 
   return (
     <Card>
-      <h1>Reading</h1>
+      <h2>Reading</h2>
+
       {measurement ? (
         <>
-          <p>id = {measurement._id}</p>
-          <p>date = {measurement.date}</p>
-          <p>sys = {measurement.systolic}</p>
-          <p>dia = {measurement.diastolic}</p>
-          <p>pulse = {measurement.pulse}</p>
-          <p>-----------------------</p>
-          {/* <p>user id = {measurement.user}</p> */}
+          <div>
+            <p>reading id: {measurement._id}</p>
+            <p>date: {measurement.date}</p>
+            <p>sys: {measurement.systolic}</p>
+            <p>dia: {measurement.diastolic}</p>
+            <p>pulse: {measurement.pulse}</p>
+          </div>
           <div className={styles.measurementNav}>
-            {/* <Link href=''>edit</Link> */}
-
             <DeleteButton id={measurement._id} />
+            {/* <DeleteButton id={measurement._id} /> */}
+            {/* <DeleteButton id={measurement._id} />
+            <DeleteButton id={measurement._id} /> */}
+            {/* <button>Edit</button> */}
           </div>
         </>
       ) : (

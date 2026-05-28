@@ -7,6 +7,9 @@
   --card-border: #e5e7eb;
   --footer-bg: #f9fafb;
   --scroll-bg: #d9d9d9;
+  --list-hover: #ffffff;
+  --error-bg: #b30000;
+  --error-text: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,6 +22,9 @@
     --card-border: #374151;
     --footer-bg: #111827;
     --scroll-bg: #22003a;
+    --list-hover: rgba(255, 255, 255, 0.05);
+    --error-bg: #b30000;
+    --error-text: #ffffff;
   }
 }
 
@@ -52,7 +58,9 @@ body {
   margin: 0;
 }
 
-p{line-height: 1.7;}
+p {
+  line-height: 1.7;
+}
 
 a {
   color: inherit;
@@ -81,8 +89,9 @@ form input {
   width: 100%;
 }
 
-form button, button {
-  padding: 6px 0;
+form button,
+button {
+  padding: 6px 12px;
   background-color: var(--primary);
   color: white;
   border-radius: 4px;
@@ -91,12 +100,14 @@ form button, button {
   transition: opacity 0.2s;
 }
 
-form button:hover, button:hover {
+form button:hover,
+button:hover {
   opacity: 0.9;
   cursor: pointer;
 }
 
-form button:disabled, button:disabled {
+form button:disabled,
+button:disabled {
   opacity: 0.2;
 }
 

@@ -3,7 +3,7 @@
 import styles from '@/components/Readings.module.css';
 import { type Measurement } from '@/types/types';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type ReadingsProps = {
   readings: Measurement[];
@@ -18,7 +18,6 @@ const options: Intl.DateTimeFormatOptions = {
 };
 
 export default function Readings({ readings }: ReadingsProps) {
-  const router = useRouter();
   const [localReadings, setLocalReadings] = useState<Measurement[] | null>(
     null,
   );
@@ -43,9 +42,7 @@ export default function Readings({ readings }: ReadingsProps) {
     uxMessage = 'No readings found';
   }
 
-  function openReadingHandler(id: string) {
-    router.push(`/measurement/${id}`);
-  }
+
 
   return (
     <>
@@ -56,21 +53,24 @@ export default function Readings({ readings }: ReadingsProps) {
             <li className={`${styles.row} ${styles.header}`}>
               <span>date / time</span>
               <span className={styles.value}>sys</span>
-              <span className={styles.value}>dis</span>
+              <span className={styles.value}>dia</span>
               <span className={styles.value}>pulse</span>
             </li>
             {localReadings.map((reading) => (
               <li
                 key={reading._id}
-                className={`${styles.row} ${styles.reading}`}
-                onClick={() => {
-                  openReadingHandler(reading._id);
-                }}
+                className={styles.reading_list_item}
+                
               >
-                <span>{reading.date}</span>
-                <span className={styles.value}>{reading.systolic}</span>
-                <span className={styles.value}>{reading.diastolic}</span>
-                <span className={styles.value}>{reading.pulse}</span>
+                <Link
+                  className={`${styles.row} ${styles.reading}`}
+                  href={`/measurement/${reading._id}`}
+                >
+                  <span>{reading.date}</span>
+                  <span className={styles.value}>{reading.systolic}</span>
+                  <span className={styles.value}>{reading.diastolic}</span>
+                  <span className={styles.value}>{reading.pulse}</span>
+                </Link>
               </li>
             ))}
 
