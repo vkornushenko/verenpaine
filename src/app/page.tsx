@@ -3,7 +3,6 @@ import NewReadingForm from '@/components/NewReadingForm';
 import Card from '@/components/UI/Card';
 import { getReadings } from '@/services/measurements';
 import { Activity } from 'react';
-// import { isAuth } from '@/middleware/isAuth';
 
 export default async function Home() {
   // console.log('NodeJS Server Time Settings:')

@@ -2,13 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-export type User = {
-  _id: string;
-  name: string;
-  email: string;
-  token: string;
-};
+import { type AuthActionState, AuthUser } from '@/types/types';
 
 export async function setAuthCookie(token: string) {
   const cookieStore = await cookies();
@@ -19,16 +13,23 @@ export async function setAuthCookie(token: string) {
   });
 }
 
-export async function login(prevState: unknown, formData: FormData) {
+export async function login(
+  prevState: AuthActionState | null,
+  formData: FormData,
+): Promise<AuthActionState> {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
   // Basic validation
   if (!email || !password) {
-    return { message: 'Email and password are required', data: null };
+    return {
+      success: false,
+      message: 'Email and password are required',
+      data: null,
+    };
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { message: 'Invalid email format', data: null };
+    return { success: false, message: 'Invalid email format', data: null };
   }
 
   try {
@@ -43,25 +44,18 @@ export async function login(prevState: unknown, formData: FormData) {
 
     if (!response.ok) {
       const { message } = await response.json();
-      return { message: message, data: null };
+      return { success: false, message: message, data: null };
     }
 
-    const user: User = await response.json();
+    const user: AuthUser = await response.json();
 
     if (!user.token) {
       return {
+        success: false,
         message: 'Server does not return token as was expected',
         data: null,
       };
     }
-
-    // // New way to construct cookie from token value in response from express
-    // const cookieStore = await cookies();
-    // cookieStore.set('token', responseData.token, {
-    //   httpOnly: true,
-    //   sameSite: 'lax',
-    //   path: '/',
-    // });
 
     await setAuthCookie(user.token);
 
@@ -69,23 +63,26 @@ export async function login(prevState: unknown, formData: FormData) {
   } catch (error) {
     console.error('Error during login:', error);
     // Handle login error (e.g., show error message to user)
-    return { message: 'Error during login', data: null };
+    return { success: false, message: 'Login failed. Please try again.', data: null };
   }
-  // return { message: 'Login successful', data: null };
+  // return { success: true, message: 'Login successful', data: null };
   redirect('/');
 }
 
-export async function signup(prevState: unknown, formData: FormData) {
+export async function signup(
+  prevState: AuthActionState | null,
+  formData: FormData,
+): Promise<AuthActionState> {
   const name = formData.get('given-name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
   // Basic validation
   if (!email || !password || !name) {
-    return { message: 'Email, password and name are required', data: null };
+    return { success: false, message: 'Email, password and name are required', data: null };
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { message: 'Invalid email format', data: null };
+    return { success: false, message: 'Invalid email format', data: null };
   }
 
   try {
@@ -104,13 +101,14 @@ export async function signup(prevState: unknown, formData: FormData) {
 
     if (!response.ok) {
       const { message } = await response.json();
-      return { message: message, data: null };
+      return { success: false, message: message, data: null };
     }
 
-    const user: User = await response.json();
+    const user: AuthUser = await response.json();
 
     if (!user.token) {
       return {
+        success: false,
         message: 'Server does not return token as was expected',
         data: null,
       };
@@ -119,7 +117,7 @@ export async function signup(prevState: unknown, formData: FormData) {
     await setAuthCookie(user.token);
   } catch (error) {
     console.log(error);
-    return { message: 'Error during signup', data: null };
+    return { success: false, message: 'Signup failed. Please try again.', data: null };
   }
   console.log('User created successfully -> Redirecting to main page');
   redirect('/');

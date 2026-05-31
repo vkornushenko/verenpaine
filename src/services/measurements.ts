@@ -1,7 +1,11 @@
 'use server';
 
 import { fetchData } from '@/lib/api';
-import { MeasurementFormState, type Measurement, type tagName } from '@/types/types';
+import {
+  MeasurementActionState,
+  type Measurement,
+  type tagName,
+} from '@/types/types';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -47,20 +51,18 @@ export async function deleteMeasurementById(id: string, path: string) {
   }
 }
 
-export async function sendMeasurement(prevState: unknown, formData: FormData): Promise<MeasurementFormState> {
+export async function sendMeasurement(
+  prevState: MeasurementActionState | null,
+  formData: FormData,
+): Promise<MeasurementActionState> {
   const systolic = formData.get('systolic') as string;
   const diastolic = formData.get('diastolic') as string;
   const pulse = formData.get('pulse') as string;
   const measurementTimeUTC = formData.get('measurement-time-UTC') as string;
-  // console.log(measurementTimeUTC);
-
-  // // converting date to UTC (-3h from FI) to save in DB
-  // const measurementIsoStringDate = formateDateToIso(measurementTime);
-  // console.log(measurementIsoStringDate);
 
   // empty fields check
   if (!systolic || !diastolic || !pulse || !measurementTimeUTC) {
-    return { ok: false, message: 'All fields are required', data: null };
+    return { success: false, message: 'All fields are required', data: null };
   }
 
   // convert to number
@@ -70,10 +72,13 @@ export async function sendMeasurement(prevState: unknown, formData: FormData): P
 
   // number check
   if (isNaN(sysNum) || isNaN(diaNum) || isNaN(pulseNum)) {
-    return { ok: false, message: 'All measurement fields must be valid numbers', data: null };
+    return {
+      success: false,
+      message: 'All measurement fields must be valid numbers',
+      data: null,
+    };
   }
 
-  
   const newMeasurement = await fetchData<Measurement>('/api/v1/measurements', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -84,12 +89,12 @@ export async function sendMeasurement(prevState: unknown, formData: FormData): P
       date: measurementTimeUTC,
     }),
   });
-  
+
   // tag to revalidate
   const tagName: tagName = 'readings';
   revalidateTag(tagName, { expire: 0 });
 
-  return { ok: true, message: 'reading saved', data: newMeasurement };
+  return { success: true, message: 'reading saved', data: newMeasurement };
 }
 
 // export async function refreshDataByTagName(tagName: tagName) {

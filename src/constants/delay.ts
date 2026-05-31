@@ -1,1 +1,0 @@
-export const COLD_START_DELAY = 3000;

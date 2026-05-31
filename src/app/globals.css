@@ -1,7 +1,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #4b0082;
+  --primary: #006eb0;
   --primary-text: #4b0082;
   --card-bg: #f3f4f6;
   --card-border: #e5e7eb;
@@ -16,7 +16,7 @@
   :root {
     --background: #0d0d0d;
     --foreground: #ededed;
-    --primary: #4b0082;
+    --primary: #006eb0;
     --primary-text: #c87aff;
     --card-bg: #1f2937;
     --card-border: #374151;
@@ -109,8 +109,5 @@ button:hover {
 form button:disabled,
 button:disabled {
   opacity: 0.2;
+  cursor: progress;
 }
-
-/* span{
-  border: 1px dotted rgb(185, 185, 185);
-} */

@@ -4,31 +4,15 @@ import { useActionState, useRef } from 'react';
 
 import { sendMeasurement } from '@/services/measurements';
 import { formatDateTimeLocal } from '@/lib/date';
-import { MeasurementFormState } from '@/types/types';
-// cold start UX
-import { useDelayedBoolean } from '@/hooks/useDelayedBoolean';
-import WakingUpServer from './UI/WakingUpServer';
-import { COLD_START_DELAY } from '@/constants/delay';
-
-const initialState: MeasurementFormState = {
-  ok: false,
-  message: '',
-  data: null,
-};
+import useFormMessageVisibility from '@/hooks/useFormMessageVisibility';
+import FormStatusMessage from '@/components/UI/FormStatusMessage';
 
 export default function NewReadingForm() {
-  console.count('NewReadingForm rendered');
   // state is a data returned from the server action,
   // formAction is a function to be called on form submit,
   // pending is a boolean indicating if the action is in progress
-  const [state, formAction, pending] = useActionState(
-    sendMeasurement,
-    initialState,
-  );
-
-  const showColdStartMsg = useDelayedBoolean(pending, COLD_START_DELAY);
-
-  // console.log(state);
+  const [state, formAction, pending] = useActionState(sendMeasurement, null);
+  const { message, startEditing } = useFormMessageVisibility(state);
 
   // input date to utc
   const utcInputRef = useRef<HTMLInputElement>(null);
@@ -44,18 +28,32 @@ export default function NewReadingForm() {
     <>
       <h2>Enter New Reading</h2>
       <form action={formAction}>
-        {/* <label htmlFor='systolic'>Systolic</label> */}
-        <input type='number' placeholder='Systolic' name='systolic' />
-        <input type='number' placeholder='Diastolic' name='diastolic' />
-        <input type='number' placeholder='Heart Rate' name='pulse' />
-
+        <input
+          type='number'
+          placeholder='Systolic'
+          name='systolic'
+          onChange={startEditing}
+        />
+        <input
+          type='number'
+          placeholder='Diastolic'
+          name='diastolic'
+          onChange={startEditing}
+        />
+        <input
+          type='number'
+          placeholder='Heart Rate'
+          name='pulse'
+          onChange={startEditing}
+        />
         <input
           type='datetime-local'
           id='measurement-time'
-          // name='measurement-time'
+          name='measurement-time'
           defaultValue={formatDateTimeLocal(now)}
           onChange={(e) => {
             handleDateChange(e.target.value);
+            startEditing();
           }}
         />
 
@@ -67,10 +65,10 @@ export default function NewReadingForm() {
         />
 
         <button type='submit' disabled={pending}>
-          {pending ? 'Saving...' : 'Save'}
+          {pending ? 'Saving reading...' : 'Save reading'}
         </button>
       </form>
-      {pending && showColdStartMsg && <WakingUpServer />}
+      {message && <FormStatusMessage message={message} />}
     </>
   );
 }

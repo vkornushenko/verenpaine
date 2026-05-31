@@ -2,22 +2,15 @@
 
 import { useActionState } from 'react';
 import { login } from '@/lib/auth';
-import { useDelayedBoolean } from '@/hooks/useDelayedBoolean';
-import WakingUpServer from './UI/WakingUpServer';
-import { COLD_START_DELAY } from '@/constants/delay';
+import FormStatusMessage from './UI/FormStatusMessage';
+import useFormMessageVisibility from '@/hooks/useFormMessageVisibility';
 
 export default function LoginForm() {
-  const initialState = {
-    message: '',
-    data: null,
-  };
-
   // state is a data returned from the server action,
   // formAction is a function to be called on form submit,
   // pending is a boolean indicating if the action is in progress
-  const [state, formAction, pending] = useActionState(login, initialState);
-
-  const showColdStartMsg = useDelayedBoolean(pending, COLD_START_DELAY);
+  const [state, formAction, pending] = useActionState(login, null);
+  const { message, startEditing } = useFormMessageVisibility(state);
 
   return (
     <>
@@ -28,14 +21,19 @@ export default function LoginForm() {
           name='email'
           placeholder='Email'
           autoComplete='email'
+          onChange={startEditing}
         />
-        <input type='password' name='password' placeholder='Password' />
+        <input
+          type='password'
+          name='password'
+          placeholder='Password'
+          onChange={startEditing}
+        />
         <button type='submit' disabled={pending}>
           {pending ? 'Logging in...' : 'Login'}
         </button>
       </form>
-      {pending && showColdStartMsg && <WakingUpServer />}
-      {/* <WakingUpServer /> */}
+      {message && <FormStatusMessage message={message} />}
     </>
   );
 }
