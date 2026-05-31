@@ -31,8 +31,6 @@ export default function Readings({ readings }: ReadingsProps) {
     setLocalReadings(localReadings);
   }, [readings]);
 
-  console.count('Readings rendered');
-
   // conditional message
   let uxMessage;
   if (!localReadings) {
@@ -41,8 +39,6 @@ export default function Readings({ readings }: ReadingsProps) {
   if (localReadings && localReadings.length === 0) {
     uxMessage = 'No readings found';
   }
-
-
 
   return (
     <>
@@ -57,11 +53,7 @@ export default function Readings({ readings }: ReadingsProps) {
               <span className={styles.value}>pulse</span>
             </li>
             {localReadings.map((reading) => (
-              <li
-                key={reading._id}
-                className={styles.reading_list_item}
-                
-              >
+              <li key={reading._id} className={styles.reading_list_item}>
                 <Link
                   className={`${styles.row} ${styles.reading}`}
                   href={`/measurement/${reading._id}`}

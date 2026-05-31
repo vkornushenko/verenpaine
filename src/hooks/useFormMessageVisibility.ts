@@ -1,7 +1,9 @@
-import { ActionState } from '@/types/types';
+import { AuthActionState, MeasurementActionState } from '@/types/types';
 import { useEffect, useState } from 'react';
 
-export default function useFormMessageVisibility(state: ActionState | null) {
+export default function useFormMessageVisibility(
+  state: AuthActionState | MeasurementActionState | null,
+) {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -12,15 +14,12 @@ export default function useFormMessageVisibility(state: ActionState | null) {
   }, [state]);
 
   const message =
-    state &&
-    state.message &&
-    !state.success &&
-    !isEditing
+    state && state.message && !state.success && !isEditing
       ? state.message
       : null;
 
   return {
     startEditing: () => setIsEditing(true),
-    message
+    message,
   };
 }
