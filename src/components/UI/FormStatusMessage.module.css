@@ -1,7 +1,7 @@
 .form_status {
   width: 100%;
-  background-color: hsl(0, 100%, 85%);
-  color: #aa0000;
-  border-left: 3px solid #aa0000;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border-left: 3px solid var(--error-border);
   padding: 2px 8px;
 }

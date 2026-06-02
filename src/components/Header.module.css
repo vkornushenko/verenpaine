@@ -1,8 +1,8 @@
 .header {
   display: flex;
   justify-content: center;
-  background-color: var(--primary);
-  color: white;
+  background-color: var(--header-bg);
+  color: var(--header-text);
 }
 
 .headerInner{

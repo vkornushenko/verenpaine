@@ -13,9 +13,9 @@ export default function AlternativeOption({
   linkHref,
 }: altOptContentProps) {
   return (
-    <p className={styles.alternativeLink}>
-      {text}
+    <div className={styles.alternative_link_container}>
+      <p>{text}</p>
       <Link href={linkHref}>{linkName}</Link>
-    </p>
+    </div>
   );
 }

@@ -1,8 +1,13 @@
-.alternativeLink {
+.alternative_link_container {
   display: flex;
   align-self: center;
+  align-items: center;
   gap: 8px;
 }
-.alternativeLink a {
-  color: var(--primary-text);
+.alternative_link_container a {
+  color: var(--link-accent-color);
+}
+
+.alternative_link_container a:hover {
+  color: var(--link-accent-color-hover);
 }

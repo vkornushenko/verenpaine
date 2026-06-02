@@ -3,7 +3,6 @@
   justify-content: center;
   align-items: flex-start;
   flex:1;
-  
 }
 
 .mainInner{
@@ -11,4 +10,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px 0; /* cancelling padding because of the card */
+  background-color: transparent;
+  color: var(--card-text);
+  border-color: var(--card-border);
 }

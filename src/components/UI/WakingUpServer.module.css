@@ -7,7 +7,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: #00000080;
+  /* background: #00000080; */
 
   display: flex;
   align-items: center;
@@ -18,7 +18,7 @@
 }
 
 .progress_bar {
-  background-color: var(--scroll-bg);
+  /* background-color: var(--scroll-bg); */
   border-radius: 4px;
   width: 100%;
 }
@@ -26,7 +26,7 @@
 .progress_fill {
   border-radius: 4px;
   height: 8px;
-  background: linear-gradient(90deg, #8a2be2, #c084fc);
+  /* background: linear-gradient(90deg, #8a2be2, #c084fc); */
   animation:
     fillBar 30s linear forwards,
     pulse 2s infinite;

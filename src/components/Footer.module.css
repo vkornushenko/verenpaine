@@ -2,14 +2,12 @@
   display: flex;
   justify-content: center;
   background-color: var(--footer-bg);
-  border-top: 1px solid var(--card-border);
+  border-top: 2px solid var(--footer-border);
+  color: var(--footer-text);
 }
 
 .footerInner {
   display: flex;
-}
-
-.footerInner p{
-  opacity: 0.4;
-  /* font-size: 0.9em; */
+  gap: 8px;
+  align-items: center;
 }
