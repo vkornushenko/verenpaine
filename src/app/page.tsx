@@ -4,21 +4,41 @@ import Card from '@/components/UI/Card';
 import { getReadings } from '@/services/measurements';
 import { Activity } from 'react';
 
-export default async function Home() {
-  // console.log('NodeJS Server Time Settings:')
-  // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
-  // console.log(new Date().toString());
-  const readings = await getReadings();
-  // console.log(readings)
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) {
+
+  const params = await searchParams;
+
+  const page = Number(params.page ?? 1);
+  const perPage = 25;
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1).toISOString();
+  const end = new Date(now.getFullYear() + 1, 0, 1).toISOString();
+
+  const { data, totalMeasurements } = await getReadings({
+    page,
+    perPage,
+    start,
+    end,
+    sort: 'desc',
+  });
 
   return (
     <>
       <Card>
         <NewReadingForm />
       </Card>
-      <Activity mode={readings ? 'visible' : 'hidden'}>
+      <Activity mode={data ? 'visible' : 'hidden'}>
         <Card>
-          <Readings readings={readings} />
+          <Readings
+            readings={data}
+            readingsCount={totalMeasurements}
+            page={page}
+            perPage={perPage}
+          />
         </Card>
       </Activity>
     </>

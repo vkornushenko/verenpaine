@@ -18,6 +18,12 @@ export type Measurement = {
 
 export type ApiResponse<T> = {
   data: T;
+  
+};
+
+export type MeasurementsResponse = {
+  data: Measurement[];
+  totalMeasurements: number;
 };
 
 export type Token = string;

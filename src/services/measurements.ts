@@ -1,22 +1,43 @@
 'use server';
 
-import { fetchData } from '@/lib/api';
+import { fetchData, fetchResponse } from '@/lib/api';
 import {
   MeasurementActionState,
+  MeasurementsResponse,
   type Measurement,
   type tagName,
 } from '@/types/types';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function getReadings() {
+type GetReadingsOptions = {
+  page?: number;
+  perPage?: number;
+  start?: string;
+  end?: string;
+  sort?: "ascending" | "asc" | "descending" | "desc";
+};
+
+export async function getReadings(options: GetReadingsOptions = {}) {
   const tagName: tagName = 'readings';
-  // TODO change tag 'readings' to 'measurements' later
-  return fetchData<Measurement[]>('/api/v1/measurements/', {
-    method: 'GET',
-    next: { tags: [tagName] },
-    // cache: 'force-cache',
+
+  // search params
+  const params = new URLSearchParams();
+  Object.entries(options).forEach(([key, value]) => {
+    if (value !== undefined) {
+      params.set(key, String(value));
+    }
   });
+
+  // TODO change tag 'readings' to 'measurements' later
+  return fetchResponse<MeasurementsResponse>(
+    `/api/v1/measurements?${params.toString()}`,
+    {
+      method: 'GET',
+      next: { tags: [tagName] },
+      // cache: 'force-cache',
+    },
+  );
 }
 
 export async function getMeasurementById(id: string) {

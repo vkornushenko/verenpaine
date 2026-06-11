@@ -1,17 +1,20 @@
-import Card from '@/components/UI/Card';
-import LogOutButton from '@/components/UI/buttons/LogOutButton';
+import AccountCard from '@/components/AccountCard';
+import { getReadings } from '@/services/measurements';
 import { getUser } from '@/services/user';
 
 export default async function AccountPage() {
   const user = await getUser();
+
+  const { totalMeasurements, data } = await getReadings({
+    perPage: 1,
+    sort: 'asc',
+  });
+
   return (
-    <Card>
-      <h2>Account</h2>
-      <div>
-        <p>Name: {user.name}</p>
-        <p>Email: {user.email}</p>
-      </div>
-      <LogOutButton />
-    </Card>
+    <AccountCard
+      user={user}
+      totalMeasurements={totalMeasurements}
+      firstReading={data[0].date}
+    />
   );
 }

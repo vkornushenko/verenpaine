@@ -7,6 +7,9 @@ import Link from 'next/link';
 
 type ReadingsProps = {
   readings: Measurement[];
+  readingsCount: number;
+  page: number;
+  perPage: number;
 };
 
 const options: Intl.DateTimeFormatOptions = {
@@ -17,9 +20,20 @@ const options: Intl.DateTimeFormatOptions = {
   minute: '2-digit',
 };
 
-export default function Readings({ readings }: ReadingsProps) {
+export default function Readings({
+  readings,
+  readingsCount,
+  page,
+  perPage,
+}: ReadingsProps) {
+  // local stands for local timeZone
   const [localReadings, setLocalReadings] = useState<Measurement[] | null>(
     null,
+  );
+
+  const pages = Array.from(
+    { length: Math.ceil(readingsCount / perPage) },
+    (_, i) => i + 1,
   );
 
   useEffect(() => {
@@ -70,6 +84,19 @@ export default function Readings({ readings }: ReadingsProps) {
               <Reading key={reading._id} reading={reading} />
             ))} */}
           </ul>
+
+          {pages.length > 1 ? (
+            <ul className={styles.pageList}>
+              {pages.map(p => (
+                <li key={p}>
+                  <Link href={`/?page=${p}`} className={`${styles.link} ${p === page ? styles.currentPage : ''}`}>
+                    <strong>{p}</strong>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : undefined}
+          {/* {`Total readings: ${readingsCount}, Readings per page: ${perPage}, Page: ${page}`} */}
         </>
       ) : (
         <p className={styles.uxMessage}>{uxMessage}</p>
