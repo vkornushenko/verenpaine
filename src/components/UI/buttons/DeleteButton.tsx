@@ -23,7 +23,7 @@ export default function DeleteButton({ id }: DeleteButtonProps) {
   return (
     <>
       <button onClick={handleDelete} className={styles.del} disabled={isPending}>
-        <MdDeleteForever/>
+        <MdDeleteForever />
         {isPending ? 'Deleting...' : 'Delete'}
       </button>
     </>

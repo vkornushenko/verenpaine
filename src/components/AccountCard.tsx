@@ -4,6 +4,7 @@ import Card from '@/components/UI/Card';
 import LogOutButton from '@/components/UI/buttons/LogOutButton';
 import { User } from '@/types/types';
 import { useLocalDate } from '@/hooks/useLocalDate';
+import styles from '@/components/AccountCard.module.css';
 
 type AccountCardProps = {
   user: User;
@@ -21,23 +22,21 @@ export default function AccountCard({
   return (
     <Card>
       <h2>Account</h2>
-      <div>
-        <p>
-          Name: <strong>{user.name}</strong>
-        </p>
-        <p>
-          Email: <strong>{user.email}</strong>
-        </p>
-        <p>
-          Readings saved: <strong>{totalMeasurements}</strong>
-        </p>
-
+      <div className={styles.table}>
+        <div>Name:</div>
+        <div>{user.name}</div>
+        <div>Email:</div>
+        <div>{user.email}</div>
+        <div>Readings saved:</div>
+        <div>{totalMeasurements}</div>
         {firstReading && (
-          <p>
-            First reading: <strong>{localDateTime}</strong>
-          </p>
+          <>
+            <div>First reading:</div>
+            <div>{localDateTime}</div>
+          </>
         )}
       </div>
+      
       <LogOutButton />
     </Card>
   );

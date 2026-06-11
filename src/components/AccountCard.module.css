@@ -1,9 +1,3 @@
-.measurementNav{
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-}
-
 .table {
   display: grid;
   /* border: 1px dashed var(--foreground-muted); */
