@@ -54,6 +54,9 @@ export default function Readings({
     uxMessage = 'No readings found';
   }
 
+  const pageListOffset =
+    pages.length > 5 && page > 3 ? -30 * (Math.min(page, pages.length - 2) - 3) : 0;
+
   return (
     <>
       {localReadings && localReadings.length > 0 ? (
@@ -86,15 +89,23 @@ export default function Readings({
           </ul>
 
           {pages.length > 1 ? (
-            <ul className={styles.pageList}>
-              {pages.map(p => (
-                <li key={p}>
-                  <Link href={`/?page=${p}`} className={`${styles.link} ${p === page ? styles.currentPage : ''}`}>
-                    <strong>{p}</strong>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className={styles.page_list_container}>
+              <ul
+                className={styles.pageList}
+                style={{ left: `${pageListOffset}px` }}
+              >
+                {pages.map((p) => (
+                  <li key={p}>
+                    <Link
+                      href={`/?page=${p}`}
+                      className={`${styles.link} ${p === page ? styles.currentPage : ''}`}
+                    >
+                      <strong>{p}</strong>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : undefined}
           {/* {`Total readings: ${readingsCount}, Readings per page: ${perPage}, Page: ${page}`} */}
         </>

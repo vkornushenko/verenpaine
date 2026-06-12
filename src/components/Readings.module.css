@@ -44,11 +44,27 @@
   justify-self: center;
 }
 
+.page_list_container {
+  display: flex;
+  align-self: center;
+  overflow-x: hidden;
+  max-width: 144px;
+  /* mask-image: linear-gradient(
+    to right,
+    black 0,
+    black calc(100% - 12px),
+    transparent 100%
+  ); */
+}
+
 .pageList {
   display: flex;
   list-style-type: none;
   gap: 6px;
   justify-content: center;
+  position: relative;
+  left: 0;
+  transition: left 0.2s ease-in-out;
 }
 
 .link {
@@ -62,13 +78,13 @@
   text-shadow: none;
 }
 
-.currentPage{
+.currentPage {
   background-color: var(--foreground-muted);
   border-color: var(--foreground-muted);
   color: var(--background);
 }
 
-.link:hover{
+.link:hover {
   text-shadow: none;
   color: var(--foreground);
   border-color: var(--foreground);

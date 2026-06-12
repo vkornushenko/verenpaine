@@ -13,7 +13,7 @@ export default async function Home({
   const params = await searchParams;
 
   const page = Number(params.page ?? 1);
-  const perPage = 25;
+  const perPage = 10;
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 1).toISOString();
   const end = new Date(now.getFullYear() + 1, 0, 1).toISOString();
