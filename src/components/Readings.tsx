@@ -55,7 +55,9 @@ export default function Readings({
   }
 
   const pageListOffset =
-    pages.length > 5 && page > 3 ? -30 * (Math.min(page, pages.length - 2) - 3) : 0;
+    pages.length > 5 && page > 3
+      ? -30 * (Math.min(page, pages.length - 2) - 3)
+      : 0;
 
   return (
     <>
@@ -97,7 +99,7 @@ export default function Readings({
                 {pages.map((p) => (
                   <li key={p}>
                     <Link
-                      href={`/?page=${p}`}
+                      href={`/?page=${p}#readings`}
                       className={`${styles.link} ${p === page ? styles.currentPage : ''}`}
                     >
                       <strong>{p}</strong>
@@ -107,7 +109,6 @@ export default function Readings({
               </ul>
             </div>
           ) : undefined}
-          {/* {`Total readings: ${readingsCount}, Readings per page: ${perPage}, Page: ${page}`} */}
         </>
       ) : (
         <p className={styles.uxMessage}>{uxMessage}</p>

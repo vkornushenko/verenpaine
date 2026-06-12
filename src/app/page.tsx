@@ -32,7 +32,7 @@ export default async function Home({
         <NewReadingForm />
       </Card>
       <Activity mode={data ? 'visible' : 'hidden'}>
-        <Card>
+        <Card id='readings'>
           <Readings
             readings={data}
             readingsCount={totalMeasurements}
