@@ -70,7 +70,7 @@
   /* Extra */
   --error-color: #cc0000;
 
-  /* SEMANTIC COLORS DARK */
+  /* SEMANTIC COLORS LIGHT */
     /* Layout */
     --background: var(--beetroot-950);
     --background-secondary: var(--beetroot-950);
@@ -188,8 +188,8 @@
     --button-bg: var(--accent);
     --button-bg-hover: var(--accent-hover);
     --button-bg-disabled: var(--accent-disabled);
-    --button-text: var(--background);
-    --button-text-disabled: var(--carrot-500);
+    --button-text: var(--carrot-950);
+    --button-text-disabled: var(--carrot-600);
     /* Inputs */
     --input-bg: var(--background-secondary);
     --input-border: var(--card-border);
@@ -225,7 +225,7 @@ body {
   /* color: var(--foreground); */
   color: var(--foreground);
   background: var(--page-bg);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -234,6 +234,7 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: inherit;
 }
 
 p {
@@ -264,6 +265,9 @@ h1{
 h2{
   font-size: 1.25rem;
 }
+h1, h2{
+  font-weight: 400;
+}
 
 form {
   display: flex;
@@ -273,6 +277,7 @@ form {
 
 form input {
   padding: 6px 6px 6px 8px;
+  /* font-family: var(--font-geist-sans); */
   width: 100%;
   border: 1px solid var(--input-border);
   background-color: var(--input-bg);
@@ -282,8 +287,14 @@ form input {
     border-color 0.2s ease;
 }
 
+input[type="number"],
+input[type="datetime-local"] {
+  font-family: var(--font-geist-mono);
+}
+
 form input::placeholder {
   color: var(--input-placeholder);
+  font-family: var(--font-geist-sans);
 }
 form input:focus {
   outline: none;
@@ -295,9 +306,11 @@ form input:focus {
 form button,
 button {
   font-size: 1rem;
-  /* margin-top: 8px; */
+  font-family: var(--font-geist-sans);
+  font-weight: 600;
   padding: 8px 12px;
   background-color: var(--button-bg);
+  /* color: var(--button-text); */
   color: var(--button-text);
   border-radius: 4px;
   border: 0;

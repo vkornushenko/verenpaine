@@ -1,5 +1,3 @@
-// export const dynamic = 'force-dynamic';
-
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '@/app/globals.css';
@@ -29,11 +27,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang='en'
+      data-scroll-behavior='smooth'
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
       <body>
-          <Header />
-          <Main>{children}</Main>
-          <Footer />
+        <Header />
+        <Main>{children}</Main>
+        <Footer />
       </body>
     </html>
   );

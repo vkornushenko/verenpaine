@@ -22,7 +22,7 @@
   display: grid;
   grid-template-columns: 3fr repeat(3, minmax(60px, max-content));
   padding: 8px 0;
-  font-family: monospace;
+  font-family: var(--font-geist-mono), monospace;
 }
 
 .reading:hover {

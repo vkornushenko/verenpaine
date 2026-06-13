@@ -10,7 +10,7 @@ export default async function Header() {
   return (
     <header className={styles.header}>
       <Container className={styles.headerInner}>
-        <Link href={'/'}>VerenPaine App</Link>
+        <Link href={'/'} className={styles.wordmark}>VerenPaine App</Link>
         <AuthLink />
       </Container>
     </header>

@@ -8,5 +8,13 @@
 .headerInner{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   /* padding: 0 16px; */
+}
+
+.wordmark{
+  font-family: var(--font-geist-sans);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  word-spacing: 0.15em;
 }
