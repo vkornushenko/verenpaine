@@ -1,0 +1,40 @@
+.header_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.close_container{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+}
+
+.close_container:hover{
+  cursor: pointer;
+  color: var(--foreground);
+}
+
+.popular_filters_container{
+  display: flex;
+  gap: 8px;
+  font-size: 0.875rem;
+}
+
+.filter_name{
+  color: var(--accent);
+  padding-right: 8px;
+  /* border-right: 1px solid var(--foreground); */
+}
+.filter_name:last-child{
+  padding-right: 0;
+  /* border: 0; */
+}
+.filter_name:hover{
+  color: var(--foreground);
+  cursor: pointer;
+}
+.current{
+  color: var(--foreground);
+}

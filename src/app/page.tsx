@@ -7,16 +7,16 @@ import { Activity } from 'react';
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; from?: string; to?: string; perPage?: string }>;
 }) {
 
   const params = await searchParams;
 
   const page = Number(params.page ?? 1);
-  const perPage = 10;
+  const perPage = Number(params.perPage ?? 10);
   const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 1).toISOString();
-  const end = new Date(now.getFullYear() + 1, 0, 1).toISOString();
+  const start = params.from || new Date(now.getFullYear(), 0, 1).toISOString();
+  const end = params.to || new Date(now.getFullYear() + 1, 0, 1).toISOString();
 
   const { data, totalMeasurements } = await getReadings({
     page,

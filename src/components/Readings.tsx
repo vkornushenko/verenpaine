@@ -4,6 +4,10 @@ import styles from '@/components/Readings.module.css';
 import { type Measurement } from '@/types/types';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { LuCalendarSearch } from 'react-icons/lu';
+import { FaFilter } from 'react-icons/fa';
+import OverlayFilter from './UI/OverlayFilter';
+import { useSearchParams } from 'next/navigation';
 
 type ReadingsProps = {
   readings: Measurement[];
@@ -30,6 +34,7 @@ export default function Readings({
   const [localReadings, setLocalReadings] = useState<Measurement[] | null>(
     null,
   );
+  const [isOpenFilter, setIsOpenFilter] = useState(false);
 
   const pages = Array.from(
     { length: Math.ceil(readingsCount / perPage) },
@@ -59,14 +64,46 @@ export default function Readings({
       ? -30 * (Math.min(page, pages.length - 2) - 3)
       : 0;
 
+  function toggleOverlayFilter() {
+    setIsOpenFilter((prevState) => !prevState);
+  }
+
+  // Helper
+  const searchParams = useSearchParams();
+  function createQueryString(params: Record<string, string | number>) {
+    const current = new URLSearchParams(searchParams.toString());
+
+    Object.entries(params).forEach(([key, value]) => {
+      current.set(key, String(value));
+    });
+
+    return current.toString();
+  }
+
   return (
     <>
       {localReadings && localReadings.length > 0 ? (
         <>
-          <h2>Recent Readings</h2>
+          <div className={styles.header_container}>
+            <h2>Recent Readings</h2>
+            <div
+              className={styles.date_filter_container}
+              onClick={toggleOverlayFilter}
+            >
+              <p>Filter Readings</p>
+              <LuCalendarSearch />
+            </div>
+          </div>
           <ul className={styles.readings_table}>
             <li className={`${styles.row} ${styles.header}`}>
-              <span>date / time</span>
+              <span>
+                <div
+                  className={styles.date_time_header}
+                  onClick={toggleOverlayFilter}
+                >
+                  date / time <FaFilter />
+                </div>
+              </span>
               <span className={styles.value}>sys</span>
               <span className={styles.value}>dia</span>
               <span className={styles.value}>pulse</span>
@@ -99,10 +136,11 @@ export default function Readings({
                 {pages.map((p) => (
                   <li key={p}>
                     <Link
-                      href={`/?page=${p}#readings`}
+                      // href={`/?page=${p}#readings`}
+                      href={`/?${createQueryString({ page: p })}#readings`}
                       className={`${styles.link} ${p === page ? styles.currentPage : ''}`}
                     >
-                      <strong>{p}</strong>
+                      {p}
                     </Link>
                   </li>
                 ))}
@@ -113,6 +151,7 @@ export default function Readings({
       ) : (
         <p className={styles.uxMessage}>{uxMessage}</p>
       )}
+      {isOpenFilter && <OverlayFilter modalToggler={toggleOverlayFilter} />}
     </>
   );
 }

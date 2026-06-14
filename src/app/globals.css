@@ -269,6 +269,10 @@ h1, h2{
   font-weight: 400;
 }
 
+#modal-root {
+  position: absolute;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -276,6 +280,7 @@ form {
 }
 
 form input {
+  border-radius: 2px;
   padding: 6px 6px 6px 8px;
   /* font-family: var(--font-geist-sans); */
   width: 100%;

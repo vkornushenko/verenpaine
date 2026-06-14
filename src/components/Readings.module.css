@@ -1,3 +1,25 @@
+.header_container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date_filter_container{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* border-bottom: 1px dotted var(--accent); */
+  font-size: 0.875rem;
+  color: var(--accent);
+  transition: color 0.2s ease;
+}
+.date_filter_container:hover{
+  color: var(--foreground);
+  cursor: pointer;
+}
+
+
+
 .uxMessage {
   text-align: center;
   opacity: 0.4;
@@ -38,6 +60,19 @@
 .readings_table .header {
   padding: 0 0 16px 0;
   color: var(--foreground-muted);
+}
+
+.date_time_header{
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: color 0.2s ease;
+}
+
+.date_time_header:hover{
+  color: var(--foreground);
+  cursor: pointer;
 }
 
 .value {

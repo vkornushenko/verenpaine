@@ -15,7 +15,7 @@ type GetReadingsOptions = {
   perPage?: number;
   start?: string;
   end?: string;
-  sort?: "ascending" | "asc" | "descending" | "desc";
+  sort?: 'ascending' | 'asc' | 'descending' | 'desc';
 };
 
 export async function getReadings(options: GetReadingsOptions = {}) {
@@ -117,7 +117,3 @@ export async function sendMeasurement(
 
   return { success: true, message: 'reading saved', data: newMeasurement };
 }
-
-// export async function refreshDataByTagName(tagName: tagName) {
-//   revalidateTag(tagName, { expire: 0 });
-// }

@@ -36,6 +36,7 @@ export default async function RootLayout({
         <Header />
         <Main>{children}</Main>
         <Footer />
+        <div id="modal-root" />
       </body>
     </html>
   );
