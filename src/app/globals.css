@@ -71,68 +71,68 @@
   --error-color: #cc0000;
 
   /* SEMANTIC COLORS LIGHT */
-    /* Layout */
-    --background: var(--beetroot-950);
-    --background-secondary: var(--beetroot-950);
-    --surface: var(--beetroot-900);
-    --surface-secondary: var(--beetroot-600);
-    /* Content */
-    --foreground: var(--milk-300);
-    --foreground-hover: var(--milk-50);
-    --foreground-muted: var(--beetroot-300);
-    /* Actions */
-    --primary: var(--beetroot-500);
-    --primary-hover: var(--beetroot-400);
-    --primary-disabled: var(--beetroot-600);
-    --secondary: var(--carrot-500);
-    --secondary-hover: var(--carrot-400);
-    --accent: var(--carrot-500);
-    --accent-hover: var(--carrot-400);
-    --accent-disabled: var(--carrot-900);
-    /* Status */
-    --error: var(--error-color);
-    --success: var(--herb-500);
-    --warning: var(--carrot-500);
-    /* UI */
-    --border: var(--beetroot-500);
-    --glow: var(--foreground-hover);
+  /* Layout */
+  --background: var(--beetroot-950);
+  --background-secondary: var(--beetroot-950);
+  --surface: var(--beetroot-900);
+  --surface-secondary: var(--beetroot-600);
+  /* Content */
+  --foreground: var(--milk-300);
+  --foreground-hover: var(--milk-50);
+  --foreground-muted: var(--beetroot-300);
+  /* Actions */
+  --primary: var(--beetroot-500);
+  --primary-hover: var(--beetroot-400);
+  --primary-disabled: var(--beetroot-600);
+  --secondary: var(--carrot-500);
+  --secondary-hover: var(--carrot-400);
+  --accent: var(--carrot-500);
+  --accent-hover: var(--carrot-400);
+  --accent-disabled: var(--carrot-900);
+  /* Status */
+  --error: var(--error-color);
+  --success: var(--herb-500);
+  --warning: var(--carrot-500);
+  /* UI */
+  --border: var(--beetroot-500);
+  --glow: var(--foreground-hover);
 
-    /* COMPONENT TOKENS DARK */
-    /* Page */
-    --page-bg: var(--background);
-    /* Header */
-    --header-bg: var(--surface-secondary);
-    --header-text: var(--foreground);
-    /* Footer */
-    --footer-bg: var(--surface-secondary);
-    --footer-text: var(--foreground-muted);
-    --footer-border: color-mix(in srgb, var(--footer-bg) 90%, white);
-    /* Card */
-    --card-bg: var(--surface);
-    --card-text: var(--foreground);
-    --card-border: color-mix(in srgb, var(--card-bg) 90%, white);
-    /* Links */
-    --link-color: var(--foreground);
-    --link-hover: var(--foreground-hover);
-    --link-accent-color: var(--carrot-400);
-    --link-accent-color-hover: var(--carrot-300);
-    --link-glow: var(--glow);
-    /* Buttons */
-    --button-bg: var(--accent);
-    --button-bg-hover: var(--accent-hover);
-    --button-bg-disabled: var(--accent-disabled);
-    --button-text: var(--background);
-    --button-text-disabled: var(--carrot-500);
-    /* Inputs */
-    --input-bg: var(--background-secondary);
-    --input-border: var(--card-border);
-    --input-text: var(--foreground);
-    --input-placeholder: color-mix(in srgb, var(--foreground-muted) 50%, black);
-    --input-focus: var(--accent);
-    /* Flash Messages */
-    --error-bg: color-mix(in srgb, var(--error) 30%, white);
-    --error-text: var(--error);
-    --error-border: var(--error);
+  /* COMPONENT TOKENS DARK */
+  /* Page */
+  --page-bg: var(--background);
+  /* Header */
+  --header-bg: var(--surface-secondary);
+  --header-text: var(--foreground);
+  /* Footer */
+  --footer-bg: var(--surface-secondary);
+  --footer-text: var(--foreground-muted);
+  --footer-border: color-mix(in srgb, var(--footer-bg) 90%, white);
+  /* Card */
+  --card-bg: var(--surface);
+  --card-text: var(--foreground);
+  --card-border: color-mix(in srgb, var(--card-bg) 90%, white);
+  /* Links */
+  --link-color: var(--foreground);
+  --link-hover: var(--foreground-hover);
+  --link-accent-color: var(--carrot-400);
+  --link-accent-color-hover: var(--carrot-300);
+  --link-glow: var(--glow);
+  /* Buttons */
+  --button-bg: var(--accent);
+  --button-bg-hover: var(--accent-hover);
+  --button-bg-disabled: var(--accent-disabled);
+  --button-text: var(--background);
+  --button-text-disabled: var(--carrot-500);
+  /* Inputs */
+  --input-bg: var(--background-secondary);
+  --input-border: var(--card-border);
+  --input-text: var(--foreground);
+  --input-placeholder: color-mix(in srgb, var(--foreground-muted) 50%, black);
+  --input-focus: var(--accent);
+  /* Flash Messages */
+  --error-bg: color-mix(in srgb, var(--error) 30%, white);
+  --error-text: var(--error);
+  --error-border: var(--error);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -221,6 +221,7 @@ body {
   gap: 42px;
   justify-content: space-between;
   min-height: 100vh;
+  min-height: 100dvh; /* fix for mobile */
 
   /* color: var(--foreground); */
   color: var(--foreground);
@@ -259,13 +260,14 @@ a:hover {
   }
 }
 
-h1{
+h1 {
   font-size: 1.5rem;
 }
-h2{
+h2 {
   font-size: 1.25rem;
 }
-h1, h2{
+h1,
+h2 {
   font-weight: 400;
 }
 
@@ -292,8 +294,8 @@ form input {
     border-color 0.2s ease;
 }
 
-input[type="number"],
-input[type="datetime-local"] {
+input[type='number'],
+input[type='datetime-local'] {
   font-family: var(--font-geist-mono);
 }
 
@@ -326,7 +328,6 @@ button {
     border-color 0.2s ease;
 }
 
-
 form button:hover,
 button:hover {
   cursor: pointer;
@@ -340,7 +341,7 @@ button:disabled {
   color: var(--button-text-disabled);
 }
 
-form > button{
+form > button {
   margin-top: 12px;
 }
 
@@ -353,14 +354,9 @@ form input:-webkit-autofill:active {
 
   -webkit-box-shadow:
     0 0 0 1000px var(--input-bg) inset,
-    0 0 6px 2px color-mix(
-      in srgb,
-      var(--input-focus) 0%,
-      transparent
-    );
+    0 0 6px 2px color-mix(in srgb, var(--input-focus) 0%, transparent);
 
-  box-shadow:
-    0 0 0 1000px var(--input-bg) inset;
+  box-shadow: 0 0 0 1000px var(--input-bg) inset;
 
   border: 1px solid var(--input-border);
 
@@ -372,9 +368,5 @@ form input:-webkit-autofill:focus {
 
   -webkit-box-shadow:
     0 0 0 1000px var(--input-bg) inset,
-    0 0 6px 2px color-mix(
-      in srgb,
-      var(--input-focus) 25%,
-      transparent
-    );
+    0 0 6px 2px color-mix(in srgb, var(--input-focus) 25%, transparent);
 }
