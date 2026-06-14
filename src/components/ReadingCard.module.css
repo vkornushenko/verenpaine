@@ -6,12 +6,15 @@
 
 .table {
   display: grid;
-  /* border: 1px dashed var(--foreground-muted); */
   grid-template-columns: 1fr 2fr;
 }
 .table > div {
   border-bottom: 1px solid var(--card-border);
   padding: 6px 0;
+}
+
+.table > div:nth-child(2n + 1){
+  padding: 6px 16px 6px 0;
 }
 
 .table > div:nth-last-child(-n + 2) {

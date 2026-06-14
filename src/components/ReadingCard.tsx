@@ -21,7 +21,7 @@ export default function ReadingCard({
       <h2>Reading</h2>
       <div className={styles.table}>
         <div>Reading id:</div>
-        <div> {readingId}</div>
+        <div>{readingId}</div>
         <div>Date:</div>
         <div>{localDateTime}</div>
         <div>Sys:</div>
