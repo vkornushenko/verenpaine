@@ -2,7 +2,7 @@
 
 import styles from '@/components/Readings.module.css';
 import { type Measurement } from '@/types/types';
-import { useEffect, useState } from 'react';
+import { Activity, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { LuCalendarSearch } from 'react-icons/lu';
 import { FaFilter } from 'react-icons/fa';
@@ -80,20 +80,43 @@ export default function Readings({
     return current.toString();
   }
 
+  const from = searchParams.get('from');
+  const to = searchParams.get('to');
+
+  const optionsForFilter: Intl.DateTimeFormatOptions = {
+  day: '2-digit',
+  month: 'short',
+  year: '2-digit',
+  // hour: '2-digit',
+  // minute: '2-digit',
+};
+
+  const fromDate = new Date(from!).toLocaleString(undefined, optionsForFilter);
+  const toDate = new Date(to!).toLocaleString(undefined, optionsForFilter);
+
   return (
     <>
+      <div className={styles.header_container}>
+        <h2>Recent Readings</h2>
+        <div
+          className={styles.date_filter_container}
+          onClick={toggleOverlayFilter}
+        >
+          <p>Filter Readings</p>
+          <LuCalendarSearch />
+        </div>
+      </div>
+
+      {from && to && (
+        <div className={styles.applied_filter_container}>
+          <div className={styles.from_to_container}>
+            <span>from:</span> {fromDate} <span>to:</span> {toDate}
+          </div>
+          <Link href={'/#readings'} className={styles.accent_link}>Reset filter</Link>
+        </div>
+      )}
       {localReadings && localReadings.length > 0 ? (
         <>
-          <div className={styles.header_container}>
-            <h2>Recent Readings</h2>
-            <div
-              className={styles.date_filter_container}
-              onClick={toggleOverlayFilter}
-            >
-              <p>Filter Readings</p>
-              <LuCalendarSearch />
-            </div>
-          </div>
           <ul className={styles.readings_table}>
             <li className={`${styles.row} ${styles.header}`}>
               <span>
@@ -151,7 +174,10 @@ export default function Readings({
       ) : (
         <p className={styles.uxMessage}>{uxMessage}</p>
       )}
-      {isOpenFilter && <OverlayFilter modalToggler={toggleOverlayFilter} />}
+      {/* {isOpenFilter && <OverlayFilter modalToggler={toggleOverlayFilter} />} */}
+      <Activity mode={isOpenFilter ? 'visible' : 'hidden'}>
+        <OverlayFilter modalToggler={toggleOverlayFilter} initialFilterName={''} />
+      </Activity>
     </>
   );
 }

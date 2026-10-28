@@ -14,9 +14,9 @@ export default async function Home({
 
   const page = Number(params.page ?? 1);
   const perPage = Number(params.perPage ?? 10);
-  const now = new Date();
-  const start = params.from || new Date(now.getFullYear(), 0, 1).toISOString();
-  const end = params.to || new Date(now.getFullYear() + 1, 0, 1).toISOString();
+  // const now = new Date();
+  const start = params.from;
+  const end = params.to;
 
   const { data, totalMeasurements } = await getReadings({
     page,

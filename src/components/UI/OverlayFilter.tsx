@@ -5,11 +5,14 @@ import { createPortal } from 'react-dom';
 
 import ReadingsFilterForm from '@/components/ReadingsFilterForm';
 
+import { type FilterName } from '@/types/types';
+
 type OverlayFilterProps = {
   modalToggler: () => void;
+  initialFilterName: FilterName;
 };
 
-export default function OverlayFilter({ modalToggler }: OverlayFilterProps) {
+export default function OverlayFilter({ modalToggler, initialFilterName }: OverlayFilterProps) {
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
     // console.log(e.target);
     // console.log(e.currentTarget);
@@ -23,7 +26,7 @@ export default function OverlayFilter({ modalToggler }: OverlayFilterProps) {
     <div className={styles.overlay} onClick={handleBackdropClick}>
       <Container className={styles.overlayInner}>
         <Card>
-          <ReadingsFilterForm modalToggler={modalToggler}/>
+          <ReadingsFilterForm modalToggler={modalToggler} initialFilterName={initialFilterName}/>
         </Card>
       </Container>
     </div>,

@@ -18,7 +18,23 @@
   cursor: pointer;
 }
 
+.applied_filter_container{
+  display: flex;
+  gap: 18px;
+  font-size: 0.875rem;
+}
 
+.from_to_container > span{
+  color: var(--foreground-muted);
+}
+
+.accent_link{
+  color: var(--accent);
+}
+
+.accent_link:hover{
+  text-shadow: none;
+}
 
 .uxMessage {
   text-align: center;

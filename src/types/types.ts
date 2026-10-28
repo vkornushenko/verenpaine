@@ -39,3 +39,5 @@ export type ActionState<T> = {
 export type AuthActionState = ActionState<User>;
 
 export type MeasurementActionState = ActionState<Measurement>;
+
+export type FilterName = '' | 'today' | 'this week' | 'this month' | 'this year';

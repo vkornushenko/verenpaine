@@ -1,15 +1,18 @@
 import styles from '@/components/ReadingsFilterForm.module.css';
 import { IoClose } from 'react-icons/io5';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { formatDateTimeLocal } from '@/lib/date';
+import { type FilterName } from '@/types/types';
+
 
 type ReadingsFilterFormProps = {
   modalToggler: () => void;
+  initialFilterName: FilterName;
 };
 
 export default function ReadingsFilterForm({
-  modalToggler,
+  modalToggler, initialFilterName
 }: ReadingsFilterFormProps) {
   const [pending, setPending] = useState(false);
 
@@ -28,16 +31,9 @@ export default function ReadingsFilterForm({
 
   const presetFilterRangeList = [
     {
-      name: 'this year',
+      name: 'today',
       range: {
-        from: new Date(now.getFullYear(), 0, 1, 0, 0),
-        to: now,
-      },
-    },
-    {
-      name: 'this month',
-      range: {
-        from: new Date(now.getFullYear(), now.getMonth(), 1, 0, 0),
+        from: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0),
         to: now,
       },
     },
@@ -49,24 +45,41 @@ export default function ReadingsFilterForm({
       },
     },
     {
-      name: 'today',
+      name: 'this month',
       range: {
-        from: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0),
+        from: new Date(now.getFullYear(), now.getMonth(), 1, 0, 0),
         to: now,
-      }
-    }
+      },
+    },
+    {
+      name: 'this year',
+      range: {
+        from: new Date(now.getFullYear(), 0, 1, 0, 0),
+        to: now,
+      },
+    },
   ];
 
   const [dateRangeLocal, setDateRangeLocal] = useState(
     presetFilterRangeList[1].range,
   );
-  const [presetFilterName, setPresetFilterName] = useState(
-    presetFilterRangeList[1].name,
-  );
+  const [presetFilterName, setPresetFilterName] = useState(initialFilterName);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const hasFilterParams =
+    searchParams.has('from') || searchParams.has('to');
+  const hadFilterParams = useRef(hasFilterParams);
 
-  function handleLinkFilter(range: Range, name: string) {
+  useEffect(() => {
+    if (hadFilterParams.current && !hasFilterParams) {
+      setPresetFilterName('');
+    }
+
+    hadFilterParams.current = hasFilterParams;
+  }, [hasFilterParams]);
+
+  function handleLinkFilter(range: Range, name: FilterName) {
     setDateRangeLocal(range);
     setPresetFilterName(name);
   }
@@ -74,24 +87,11 @@ export default function ReadingsFilterForm({
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setPending(true);
-
-    // const formData = new FormData(e.currentTarget);
-
-    // const fromLocal = formData.get('from') as string;
-    // const toLocal = formData.get('to') as string;
-
-    // if (!fromLocal || !toLocal) {
-    //   setMessage('All fields are required!');
-    //   setPending(false);
-    //   return;
-    // }
-
-    // // convert Local to UTC
-    // const fromUTC = new Date(fromLocal).toISOString();
-    // const toUTC = new Date(toLocal).toISOString();
-
-    // search params
+    
     const params = new URLSearchParams();
+
+    console.log('dateRangeLocal.from:');
+    console.log(dateRangeLocal.from);
 
     params.set('from', dateRangeLocal.from.toISOString());
     params.set('to', dateRangeLocal.to.toISOString());
@@ -120,7 +120,7 @@ export default function ReadingsFilterForm({
           <p
             key={index}
             className={`${styles.filter_name} ${filter.name === presetFilterName ? styles.current : ''}`}
-            onClick={() => handleLinkFilter(filter.range, filter.name)}
+            onClick={() => handleLinkFilter(filter.range, filter.name as FilterName)}
           >
             {filter.name}
           </p>
@@ -157,7 +157,6 @@ export default function ReadingsFilterForm({
           {pending ? 'Applying readings filter...' : 'Apply readings filter'}
         </button>
       </form>
-
     </>
   );
 }
