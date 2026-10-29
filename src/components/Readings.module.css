@@ -1,38 +1,50 @@
-.header_container{
+.header_container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.date_filter_container{
+.secondary_button {
   display: flex;
   align-items: center;
   gap: 6px;
-  /* border-bottom: 1px dotted var(--accent); */
   font-size: 0.875rem;
   color: var(--accent);
   transition: color 0.2s ease;
 }
-.date_filter_container:hover{
+.secondary_button:hover {
   color: var(--foreground);
   cursor: pointer;
 }
 
-.applied_filter_container{
+.applied_filter_container {
   display: flex;
+  width: max-content;
   gap: 18px;
   font-size: 0.875rem;
+  border: 1px dashed var(--card-border);
+  padding: 2px 4px;
 }
 
-.from_to_container > span{
+.from_to_container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.from_to_container > span {
   color: var(--foreground-muted);
 }
 
-.accent_link{
+.from_to_container > span:not(:first-child) {
+  padding-left: 4px;
+}
+
+.accent_link {
   color: var(--accent);
 }
 
-.accent_link:hover{
+.accent_link:hover {
   text-shadow: none;
 }
 
@@ -78,7 +90,7 @@
   color: var(--foreground-muted);
 }
 
-.date_time_header{
+.date_time_header {
   width: fit-content;
   display: flex;
   align-items: center;
@@ -86,7 +98,7 @@
   transition: color 0.2s ease;
 }
 
-.date_time_header:hover{
+.date_time_header:hover {
   color: var(--foreground);
   cursor: pointer;
 }

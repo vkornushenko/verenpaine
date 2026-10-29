@@ -4,7 +4,7 @@ import styles from '@/components/Readings.module.css';
 import { type Measurement } from '@/types/types';
 import { Activity, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { LuCalendarSearch } from 'react-icons/lu';
+import { LuCalendarSearch, LuX } from 'react-icons/lu';
 import { FaFilter } from 'react-icons/fa';
 import OverlayFilter from './UI/OverlayFilter';
 import { useSearchParams } from 'next/navigation';
@@ -84,12 +84,12 @@ export default function Readings({
   const to = searchParams.get('to');
 
   const optionsForFilter: Intl.DateTimeFormatOptions = {
-  day: '2-digit',
-  month: 'short',
-  year: '2-digit',
-  // hour: '2-digit',
-  // minute: '2-digit',
-};
+    day: '2-digit',
+    month: 'short',
+    year: '2-digit',
+    // hour: '2-digit',
+    // minute: '2-digit',
+  };
 
   const fromDate = new Date(from!).toLocaleString(undefined, optionsForFilter);
   const toDate = new Date(to!).toLocaleString(undefined, optionsForFilter);
@@ -99,7 +99,7 @@ export default function Readings({
       <div className={styles.header_container}>
         <h2>Recent Readings</h2>
         <div
-          className={styles.date_filter_container}
+          className={styles.secondary_button}
           onClick={toggleOverlayFilter}
         >
           <p>Filter Readings</p>
@@ -112,7 +112,10 @@ export default function Readings({
           <div className={styles.from_to_container}>
             <span>from:</span> {fromDate} <span>to:</span> {toDate}
           </div>
-          <Link href={'/#readings'} className={styles.accent_link}>Reset filter</Link>
+          <Link href={'/#readings'} className={`${styles.secondary_button} ${styles.accent_link}`}>
+            <p>Reset filter</p>
+            <LuX size={18}/>
+          </Link>
         </div>
       )}
       {localReadings && localReadings.length > 0 ? (
@@ -176,7 +179,10 @@ export default function Readings({
       )}
       {/* {isOpenFilter && <OverlayFilter modalToggler={toggleOverlayFilter} />} */}
       <Activity mode={isOpenFilter ? 'visible' : 'hidden'}>
-        <OverlayFilter modalToggler={toggleOverlayFilter} initialFilterName={''} />
+        <OverlayFilter
+          modalToggler={toggleOverlayFilter}
+          initialFilterName={''}
+        />
       </Activity>
     </>
   );

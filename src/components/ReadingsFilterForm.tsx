@@ -115,7 +115,6 @@ export default function ReadingsFilterForm({
       </div>
 
       <div className={styles.popular_filters_container}>
-        {/* <p className={styles.filter_group_name}>Period:</p> */}
         {presetFilterRangeList.map((filter, index) => (
           <p
             key={index}
