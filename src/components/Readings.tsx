@@ -1,8 +1,8 @@
 'use client';
 
 import styles from '@/components/Readings.module.css';
-import { type Measurement } from '@/types/types';
-import { useEffect, useState } from 'react';
+import { type FilterName, type Measurement } from '@/types/types';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { LuCalendarSearch, LuX } from 'react-icons/lu';
 import { FaFilter } from 'react-icons/fa';
@@ -42,6 +42,7 @@ export default function Readings({
     null,
   );
   const [isOpenFilter, setIsOpenFilter] = useState(false);
+  const [presetFilterName, setPresetFilterName] = useState<FilterName>('');
 
   const pages = Array.from(
     { length: Math.ceil(readingsCount / perPage) },
@@ -89,8 +90,18 @@ export default function Readings({
 
   const from = searchParams.get('from');
   const to = searchParams.get('to');
+  const hasFilterParams = searchParams.has('from') || searchParams.has('to');
+  const hadFilterParams = useRef(hasFilterParams);
   const fromDate = useLocalDate(from ?? '', optionsForFilter);
   const toDate = useLocalDate(to ?? '', optionsForFilter);
+
+  useEffect(() => {
+    if (hadFilterParams.current && !hasFilterParams) {
+      setPresetFilterName('');
+    }
+
+    hadFilterParams.current = hasFilterParams;
+  }, [hasFilterParams]);
 
   return (
     <>
@@ -178,7 +189,8 @@ export default function Readings({
       {isOpenFilter && (
         <OverlayFilter
           modalToggler={toggleOverlayFilter}
-          initialFilterName={''}
+          presetFilterName={presetFilterName}
+          onPresetFilterNameChange={setPresetFilterName}
         />
       )}
     </>

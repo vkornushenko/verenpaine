@@ -6,7 +6,6 @@ export async function proxy(req: NextRequest) {
 
   // if no token redirect to login
   if (!token) {
-    console.log('proxy - no token');
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
@@ -17,7 +16,6 @@ export async function proxy(req: NextRequest) {
   if (decodedToken.exp) {
     const isExpired = decodedToken.exp * 1000 < now;
     if (isExpired) {
-      console.log('proxy - expired token');
       return NextResponse.redirect(new URL('/login', req.url));
     }
   }

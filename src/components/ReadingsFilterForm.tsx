@@ -1,18 +1,21 @@
 import styles from '@/components/ReadingsFilterForm.module.css';
 import { IoClose } from 'react-icons/io5';
-import { useEffect, useRef, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { formatDateTimeLocal } from '@/lib/date';
 import { type FilterName } from '@/types/types';
 
 
 type ReadingsFilterFormProps = {
   modalToggler: () => void;
-  initialFilterName: FilterName;
+  presetFilterName: FilterName;
+  onPresetFilterNameChange: (name: FilterName) => void;
 };
 
 export default function ReadingsFilterForm({
-  modalToggler, initialFilterName
+  modalToggler,
+  presetFilterName,
+  onPresetFilterNameChange,
 }: ReadingsFilterFormProps) {
   const [pending, setPending] = useState(false);
 
@@ -63,25 +66,12 @@ export default function ReadingsFilterForm({
   const [dateRangeLocal, setDateRangeLocal] = useState(
     presetFilterRangeList[1].range,
   );
-  const [presetFilterName, setPresetFilterName] = useState(initialFilterName);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const hasFilterParams =
-    searchParams.has('from') || searchParams.has('to');
-  const hadFilterParams = useRef(hasFilterParams);
-
-  useEffect(() => {
-    if (hadFilterParams.current && !hasFilterParams) {
-      setPresetFilterName('');
-    }
-
-    hadFilterParams.current = hasFilterParams;
-  }, [hasFilterParams]);
 
   function handleLinkFilter(range: Range, name: FilterName) {
     setDateRangeLocal(range);
-    setPresetFilterName(name);
+    onPresetFilterNameChange(name);
   }
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -89,9 +79,6 @@ export default function ReadingsFilterForm({
     setPending(true);
     
     const params = new URLSearchParams();
-
-    console.log('dateRangeLocal.from:');
-    console.log(dateRangeLocal.from);
 
     params.set('from', dateRangeLocal.from.toISOString());
     params.set('to', dateRangeLocal.to.toISOString());
@@ -114,17 +101,17 @@ export default function ReadingsFilterForm({
         </div>
       </div>
 
-      <div className={styles.popular_filters_container}>
+      <ul className={styles.popular_filters_container}>
         {presetFilterRangeList.map((filter, index) => (
-          <p
+          <li
             key={index}
             className={`${styles.filter_name} ${filter.name === presetFilterName ? styles.current : ''}`}
             onClick={() => handleLinkFilter(filter.range, filter.name as FilterName)}
           >
             {filter.name}
-          </p>
+          </li>
         ))}
-      </div>
+      </ul>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -132,7 +119,7 @@ export default function ReadingsFilterForm({
           name='from'
           value={formatDateTimeLocal(dateRangeLocal.from)}
           onChange={(e) => {
-            setPresetFilterName('');
+            onPresetFilterNameChange('');
             setDateRangeLocal((prev) => ({
               ...prev,
               from: new Date(e.target.value),
@@ -145,7 +132,7 @@ export default function ReadingsFilterForm({
           name='to'
           value={formatDateTimeLocal(dateRangeLocal.to)}
           onChange={(e) => {
-            setPresetFilterName('');
+            onPresetFilterNameChange('');
             setDateRangeLocal((prev) => ({
               ...prev,
               to: new Date(e.target.value),

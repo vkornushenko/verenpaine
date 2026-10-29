@@ -10,7 +10,7 @@ export default function ErrorPage({
   error: Error & { digest?: string }
   // unstable_retry: () => void
 }) {
-  console.log(error)
+  console.error(error);
   return (
     <Card>
       <h2>Error happend</h2>

@@ -29,9 +29,6 @@ export async function getReadings(options: GetReadingsOptions = {}) {
     }
   });
 
-  console.log('params from getReadings:')
-  console.log(params);
-
   // TODO change tag 'readings' to 'measurements' later
   return fetchResponse<MeasurementsResponse>(
     `/api/v1/measurements?${params.toString()}`,

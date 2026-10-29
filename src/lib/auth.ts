@@ -97,8 +97,6 @@ export async function signup(
       },
     );
 
-    console.log(response);
-
     if (!response.ok) {
       const { message } = await response.json();
       return { success: false, message: message, data: null };
@@ -116,10 +114,9 @@ export async function signup(
 
     await setAuthCookie(user.token);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { success: false, message: 'Signup failed. Please try again.', data: null };
   }
-  console.log('User created successfully -> Redirecting to main page');
   redirect('/');
 }
 

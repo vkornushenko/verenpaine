@@ -23,6 +23,7 @@
 }
 
 .filter_name{
+  display: flex;
   color: var(--accent);
   padding-right: 8px;
   /* border-right: 1px solid var(--foreground); */

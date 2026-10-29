@@ -9,14 +9,16 @@ import { type FilterName } from '@/types/types';
 
 type OverlayFilterProps = {
   modalToggler: () => void;
-  initialFilterName: FilterName;
+  presetFilterName: FilterName;
+  onPresetFilterNameChange: (name: FilterName) => void;
 };
 
-export default function OverlayFilter({ modalToggler, initialFilterName }: OverlayFilterProps) {
+export default function OverlayFilter({
+  modalToggler,
+  presetFilterName,
+  onPresetFilterNameChange,
+}: OverlayFilterProps) {
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
-    // console.log(e.target);
-    // console.log(e.currentTarget);
-
     if (e.target === e.currentTarget) {
       modalToggler();
     }
@@ -26,7 +28,11 @@ export default function OverlayFilter({ modalToggler, initialFilterName }: Overl
     <div className={styles.overlay} onClick={handleBackdropClick}>
       <Container className={styles.overlayInner}>
         <Card>
-          <ReadingsFilterForm modalToggler={modalToggler} initialFilterName={initialFilterName}/>
+          <ReadingsFilterForm
+            modalToggler={modalToggler}
+            presetFilterName={presetFilterName}
+            onPresetFilterNameChange={onPresetFilterNameChange}
+          />
         </Card>
       </Container>
     </div>,
