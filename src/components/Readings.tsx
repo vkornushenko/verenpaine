@@ -2,12 +2,13 @@
 
 import styles from '@/components/Readings.module.css';
 import { type Measurement } from '@/types/types';
-import { Activity, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { LuCalendarSearch, LuX } from 'react-icons/lu';
 import { FaFilter } from 'react-icons/fa';
 import OverlayFilter from './UI/OverlayFilter';
 import { useSearchParams } from 'next/navigation';
+import { useLocalDate } from '@/hooks/useLocalDate';
 
 type ReadingsProps = {
   readings: Measurement[];
@@ -22,6 +23,12 @@ const options: Intl.DateTimeFormatOptions = {
   // year: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
+};
+
+const optionsForFilter: Intl.DateTimeFormatOptions = {
+  day: '2-digit',
+  month: 'short',
+  year: '2-digit',
 };
 
 export default function Readings({
@@ -82,17 +89,8 @@ export default function Readings({
 
   const from = searchParams.get('from');
   const to = searchParams.get('to');
-
-  const optionsForFilter: Intl.DateTimeFormatOptions = {
-    day: '2-digit',
-    month: 'short',
-    year: '2-digit',
-    // hour: '2-digit',
-    // minute: '2-digit',
-  };
-
-  const fromDate = new Date(from!).toLocaleString(undefined, optionsForFilter);
-  const toDate = new Date(to!).toLocaleString(undefined, optionsForFilter);
+  const fromDate = useLocalDate(from ?? '', optionsForFilter);
+  const toDate = useLocalDate(to ?? '', optionsForFilter);
 
   return (
     <>
@@ -177,13 +175,12 @@ export default function Readings({
       ) : (
         <p className={styles.uxMessage}>{uxMessage}</p>
       )}
-      {/* {isOpenFilter && <OverlayFilter modalToggler={toggleOverlayFilter} />} */}
-      <Activity mode={isOpenFilter ? 'visible' : 'hidden'}>
+      {isOpenFilter && (
         <OverlayFilter
           modalToggler={toggleOverlayFilter}
           initialFilterName={''}
         />
-      </Activity>
+      )}
     </>
   );
 }
