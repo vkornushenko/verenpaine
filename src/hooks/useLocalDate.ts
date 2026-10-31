@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { formatLocalDate } from '@/lib/date';
 
 const defaultOptions: Intl.DateTimeFormatOptions = {
   day: '2-digit',
@@ -16,7 +17,7 @@ export function useLocalDate(
 
   useEffect(() => {
     // eslint-disable-next-line
-    setLocalDate(new Date(date).toLocaleString(undefined, options));
+    setLocalDate(formatLocalDate(date, options));
   }, [date, options]);
 
   return localDate;

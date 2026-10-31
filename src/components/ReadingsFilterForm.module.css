@@ -8,10 +8,15 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--accent);
+  font: inherit;
 }
 
 .close_container:hover{
+  background-color: transparent;
   cursor: pointer;
   color: var(--foreground);
 }
@@ -24,18 +29,24 @@
 
 .filter_name{
   display: flex;
-  color: var(--accent);
-  padding-right: 8px;
-  /* border-right: 1px solid var(--foreground); */
 }
 .filter_name:last-child{
   padding-right: 0;
-  /* border: 0; */
 }
-.filter_name:hover{
+.filter_name button {
+  padding: 0 8px 0 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+}
+.filter_name:last-child button {
+  padding-right: 0;
+}
+.filter_name button:hover{
   color: var(--foreground);
   cursor: pointer;
 }
-.current{
+.current button {
   color: var(--foreground);
 }

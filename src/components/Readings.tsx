@@ -3,16 +3,13 @@
 import styles from '@/components/Readings.module.css';
 import {
   type AverageMeasurements,
-  type FilterName,
   type Measurement,
 } from '@/types/types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { LuCalendarSearch, LuX } from 'react-icons/lu';
-import { FaFilter } from 'react-icons/fa';
-import OverlayFilter from './UI/OverlayFilter';
 import { useSearchParams } from 'next/navigation';
-import { useLocalDate } from '@/hooks/useLocalDate';
+import MeasurementDateFilter from '@/components/MeasurementDateFilter';
+import { formatLocalDate } from '@/lib/date';
 
 type ReadingsProps = {
   readings: Measurement[];
@@ -30,12 +27,6 @@ const options: Intl.DateTimeFormatOptions = {
   minute: '2-digit',
 };
 
-const optionsForFilter: Intl.DateTimeFormatOptions = {
-  day: '2-digit',
-  month: 'short',
-  year: '2-digit',
-};
-
 export default function Readings({
   readings,
   readingsCount,
@@ -47,8 +38,6 @@ export default function Readings({
   const [localReadings, setLocalReadings] = useState<Measurement[] | null>(
     null,
   );
-  const [isOpenFilter, setIsOpenFilter] = useState(false);
-  const [presetFilterName, setPresetFilterName] = useState<FilterName>('');
 
   const pages = Array.from(
     { length: Math.ceil(readingsCount / perPage) },
@@ -58,7 +47,7 @@ export default function Readings({
   useEffect(() => {
     const localReadings = readings.map((reading) => ({
       ...reading,
-      date: new Date(reading.date).toLocaleString(undefined, options),
+      date: formatLocalDate(reading.date, options),
     }));
     // eslint-disable-next-line
     setLocalReadings(localReadings);
@@ -78,10 +67,6 @@ export default function Readings({
       ? -30 * (Math.min(page, pages.length - 2) - 3)
       : 0;
 
-  function toggleOverlayFilter() {
-    setIsOpenFilter((prevState) => !prevState);
-  }
-
   // Helper
   const searchParams = useSearchParams();
   function createQueryString(params: Record<string, string | number>) {
@@ -96,55 +81,21 @@ export default function Readings({
 
   const from = searchParams.get('from');
   const to = searchParams.get('to');
-  const hasFilterParams = searchParams.has('from') || searchParams.has('to');
-  const hadFilterParams = useRef(hasFilterParams);
-  const fromDate = useLocalDate(from ?? '', optionsForFilter);
-  const toDate = useLocalDate(to ?? '', optionsForFilter);
-
-  useEffect(() => {
-    if (hadFilterParams.current && !hasFilterParams) {
-      setPresetFilterName('');
-    }
-
-    hadFilterParams.current = hasFilterParams;
-  }, [hasFilterParams]);
+  const analyticsParams = new URLSearchParams();
+  if (from) analyticsParams.set('from', from);
+  if (to) analyticsParams.set('to', to);
+  const analyticsHref = analyticsParams.size
+    ? `/analytics?${analyticsParams.toString()}`
+    : '/analytics';
 
   return (
     <>
-      <div className={styles.header_container}>
-        <h2>Recent Readings</h2>
-        <div
-          className={styles.secondary_button}
-          onClick={toggleOverlayFilter}
-        >
-          <p>Filter Readings</p>
-          <LuCalendarSearch />
-        </div>
-      </div>
-
-      {from && to && (
-        <div className={styles.applied_filter_container}>
-          <div className={styles.from_to_container}>
-            <span>from:</span> {fromDate} <span>to:</span> {toDate}
-          </div>
-          <Link href={'/#readings'} className={`${styles.secondary_button} ${styles.accent_link}`}>
-            <p>Reset filter</p>
-            <LuX size={18}/>
-          </Link>
-        </div>
-      )}
+      <MeasurementDateFilter title='Recent Readings' />
       {localReadings && localReadings.length > 0 ? (
         <>
           <ul className={styles.readings_table}>
             <li className={`${styles.row} ${styles.header}`}>
-              <span>
-                <div
-                  className={styles.date_time_header}
-                  onClick={toggleOverlayFilter}
-                >
-                  date / time <FaFilter />
-                </div>
-              </span>
+              <span>date / time</span>
               <span className={styles.value}>sys</span>
               <span className={styles.value}>dia</span>
               <span className={styles.value}>pulse</span>
@@ -167,8 +118,13 @@ export default function Readings({
               aria-label='Average measurements'
             >
               <span className={styles.average_label}>
-                Average measurements
-                <small>Across {averages.measurementCount} readings</small>
+                <Link
+                  href={analyticsHref}
+                  className={styles.average_link}
+                >
+                  Average measurements
+                  <small>Across {averages.measurementCount} readings</small>
+                </Link>
               </span>
               <span className={styles.value}>
                 <strong>
@@ -220,13 +176,6 @@ export default function Readings({
           <p className={styles.uxMessage}>{uxMessage}</p>
           <p className={styles.average_empty}>No readings to average</p>
         </>
-      )}
-      {isOpenFilter && (
-        <OverlayFilter
-          modalToggler={toggleOverlayFilter}
-          presetFilterName={presetFilterName}
-          onPresetFilterNameChange={setPresetFilterName}
-        />
       )}
     </>
   );

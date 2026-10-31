@@ -1,28 +1,28 @@
 import styles from '@/components/ReadingsFilterForm.module.css';
 import { IoClose } from 'react-icons/io5';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { formatDateTimeLocal } from '@/lib/date';
-import { type FilterName } from '@/types/types';
-
+import { type FilterName } from '@/types/filter';
 
 type ReadingsFilterFormProps = {
   modalToggler: () => void;
   presetFilterName: FilterName;
   onPresetFilterNameChange: (name: FilterName) => void;
+  destination?: 'home' | 'analytics';
 };
 
 export default function ReadingsFilterForm({
   modalToggler,
   presetFilterName,
   onPresetFilterNameChange,
+  destination = 'home',
 }: ReadingsFilterFormProps) {
-  const [pending, setPending] = useState(false);
-
   type Range = {
     from: Date;
     to: Date;
   };
+  type PresetFilterName = Exclude<FilterName, ''>;
 
   const now = new Date();
 
@@ -32,7 +32,10 @@ export default function ReadingsFilterForm({
   startOfWeek.setDate(now.getDate() - diff);
   startOfWeek.setHours(0, 0, 0, 0);
 
-  const presetFilterRangeList = [
+  const presetFilterRangeList: {
+    name: PresetFilterName;
+    range: Range;
+  }[] = [
     {
       name: 'today',
       range: {
@@ -68,26 +71,40 @@ export default function ReadingsFilterForm({
   );
 
   const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [dateRangeError, setDateRangeError] = useState('');
 
   function handleLinkFilter(range: Range, name: FilterName) {
+    setDateRangeError('');
     setDateRangeLocal(range);
     onPresetFilterNameChange(name);
   }
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    setPending(true);
-    
-    const params = new URLSearchParams();
+    if (
+      !Number.isFinite(dateRangeLocal.from.getTime()) ||
+      !Number.isFinite(dateRangeLocal.to.getTime()) ||
+      dateRangeLocal.to < dateRangeLocal.from
+    ) {
+      setDateRangeError('Enter a valid date range.');
+      return;
+    }
 
+    setDateRangeError('');
+
+    const params = new URLSearchParams();
     params.set('from', dateRangeLocal.from.toISOString());
     params.set('to', dateRangeLocal.to.toISOString());
-    params.set('page', '1'); // reset pagination
-    // params.set('perPage', '1000');
 
-    router.push(`/?${params.toString()}#readings`);
-
-    setPending(false);
+    if (destination === 'home') {
+      params.set('page', '1');
+    }
+    const destinationHref =
+      destination === 'home'
+        ? `/?${params.toString()}#readings`
+        : `/analytics?${params.toString()}`;
+    startTransition(() => router.push(destinationHref));
     modalToggler();
   }
 
@@ -95,20 +112,29 @@ export default function ReadingsFilterForm({
     <>
       <div className={styles.header_container}>
         <h2>Readings Filter</h2>
-        <div onClick={modalToggler} className={styles.close_container}>
+        <button
+          type='button'
+          onClick={modalToggler}
+          className={styles.close_container}
+        >
           <IoClose size={26} className={styles.closeBtn} />
           Close
-        </div>
+        </button>
       </div>
 
       <ul className={styles.popular_filters_container}>
-        {presetFilterRangeList.map((filter, index) => (
+        {presetFilterRangeList.map((filter) => (
           <li
-            key={index}
+            key={filter.name}
             className={`${styles.filter_name} ${filter.name === presetFilterName ? styles.current : ''}`}
-            onClick={() => handleLinkFilter(filter.range, filter.name as FilterName)}
           >
-            {filter.name}
+            <button
+              type='button'
+              aria-pressed={filter.name === presetFilterName}
+              onClick={() => handleLinkFilter(filter.range, filter.name)}
+            >
+              {filter.name}
+            </button>
           </li>
         ))}
       </ul>
@@ -120,6 +146,7 @@ export default function ReadingsFilterForm({
           value={formatDateTimeLocal(dateRangeLocal.from)}
           onChange={(e) => {
             onPresetFilterNameChange('');
+            setDateRangeError('');
             setDateRangeLocal((prev) => ({
               ...prev,
               from: new Date(e.target.value),
@@ -133,6 +160,7 @@ export default function ReadingsFilterForm({
           value={formatDateTimeLocal(dateRangeLocal.to)}
           onChange={(e) => {
             onPresetFilterNameChange('');
+            setDateRangeError('');
             setDateRangeLocal((prev) => ({
               ...prev,
               to: new Date(e.target.value),
@@ -142,6 +170,7 @@ export default function ReadingsFilterForm({
         <button type='submit' disabled={pending}>
           {pending ? 'Applying readings filter...' : 'Apply readings filter'}
         </button>
+        {dateRangeError && <p role='alert'>{dateRangeError}</p>}
       </form>
     </>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { signup } from '@/lib/auth';
+import { signup } from '@/actions/auth';
 import { useActionState } from 'react';
 import FormStatusMessage from './UI/FormStatusMessage';
 import useFormMessageVisibility from '@/hooks/useFormMessageVisibility';

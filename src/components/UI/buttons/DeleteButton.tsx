@@ -1,7 +1,7 @@
 'use client';
 
 import styles from '@/components/UI/buttons/DeleteButton.module.css';
-import { deleteMeasurementById } from '@/services/measurements';
+import { deleteMeasurementById } from '@/actions/measurements';
 import { usePathname } from 'next/navigation';
 import { useTransition } from 'react';
 import { MdDeleteForever } from 'react-icons/md';

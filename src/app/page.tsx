@@ -3,6 +3,7 @@ import NewReadingForm from '@/components/NewReadingForm';
 import Card from '@/components/UI/Card';
 import { getAverageReadings, getReadings } from '@/services/measurements';
 import { Activity } from 'react';
+import { redirect } from 'next/navigation';
 
 export default async function Home({
   searchParams,
@@ -18,7 +19,7 @@ export default async function Home({
   const start = params.from;
   const end = params.to;
 
-  const [{ data, totalMeasurements }, averages] = await Promise.all([
+  const [readings, averages] = await Promise.all([
     getReadings({
       page,
       perPage,
@@ -28,6 +29,8 @@ export default async function Home({
     }),
     getAverageReadings({ start, end }),
   ]);
+  if (!readings || !averages) redirect('/login');
+  const { data, totalMeasurements } = readings;
 
   return (
     <>

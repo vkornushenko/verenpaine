@@ -1,25 +1,21 @@
 import { getToken } from '@/lib/getToken';
 import { type ApiResponse } from '@/types/types';
 
-export async function fetchData<T>(
+async function fetchApi<T>(
   endpoint: string,
-  options: RequestInit = {},
-): Promise<T> {
+  options: RequestInit,
+  parseResponse: (response: Response) => Promise<T>,
+): Promise<T | null> {
   const token = await getToken();
+  const headers = new Headers(options.headers);
+  if (token) headers.set('Authorization', `Bearer ${token}`);
 
   const response = await fetch(`${process.env.API_URL}${endpoint}`, {
     ...options,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      ...options.headers,
-    },
-    // ...(tagName && { cache: 'force-cache' }),
-    // ...(tagName && { next: { tags: [tagName] } }),
+    headers,
   });
 
-  if (response.status === 401) {
-    return null as T;
-  }
+  if (response.status === 401) return null;
 
   if (!response.ok) {
     throw new Error(
@@ -27,36 +23,22 @@ export async function fetchData<T>(
     );
   }
 
-  const json: ApiResponse<T> = await response.json();
-  return json.data;
+  return parseResponse(response);
 }
 
-export async function fetchResponse<T>(
+export function fetchData<T>(
   endpoint: string,
   options: RequestInit = {},
-): Promise<T> {
-  const token = await getToken();
-
-  const response = await fetch(`${process.env.API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      ...options.headers,
-    },
-    // ...(tagName && { cache: 'force-cache' }),
-    // ...(tagName && { next: { tags: [tagName] } }),
+): Promise<T | null> {
+  return fetchApi(endpoint, options, async (response) => {
+    const json: ApiResponse<T> = await response.json();
+    return json.data;
   });
+}
 
-  if (response.status === 401) {
-    return null as never;
-  }
-
-  if (!response.ok) {
-    throw new Error(
-      `failed to fetch data ${response.status} - ${response.statusText}`,
-    );
-  }
-
-  // const json: ApiResponse<T> = await response.json();
-  return response.json();
+export function fetchResponse<T>(
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<T | null> {
+  return fetchApi(endpoint, options, (response) => response.json());
 }

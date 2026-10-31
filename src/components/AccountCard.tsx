@@ -9,7 +9,7 @@ import styles from '@/components/AccountCard.module.css';
 type AccountCardProps = {
   user: User;
   totalMeasurements: number;
-  firstReading: string;
+  firstReading?: string;
 };
 
 export default function AccountCard({
@@ -17,7 +17,7 @@ export default function AccountCard({
   totalMeasurements,
   firstReading,
 }: AccountCardProps) {
-  const localDateTime = useLocalDate(firstReading);
+  const localDateTime = useLocalDate(firstReading ?? '');
 
   return (
     <Card>

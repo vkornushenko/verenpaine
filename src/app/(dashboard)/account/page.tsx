@@ -1,20 +1,23 @@
 import AccountCard from '@/components/AccountCard';
 import { getReadings } from '@/services/measurements';
 import { getUser } from '@/services/user';
+import { redirect } from 'next/navigation';
 
 export default async function AccountPage() {
-  const user = await getUser();
-
-  const { totalMeasurements, data } = await getReadings({
-    perPage: 1,
-    sort: 'asc',
-  });
+  const [user, readings] = await Promise.all([
+    getUser(),
+    getReadings({
+      perPage: 1,
+      sort: 'asc',
+    }),
+  ]);
+  if (!user || !readings) redirect('/login');
 
   return (
     <AccountCard
       user={user}
-      totalMeasurements={totalMeasurements}
-      firstReading={data[0].date}
+      totalMeasurements={readings.totalMeasurements}
+      firstReading={readings.data[0]?.date}
     />
   );
 }

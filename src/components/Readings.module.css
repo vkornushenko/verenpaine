@@ -1,45 +1,3 @@
-.header_container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.secondary_button {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.875rem;
-  color: var(--accent);
-  transition: color 0.2s ease;
-}
-.secondary_button:hover {
-  color: var(--foreground);
-  cursor: pointer;
-}
-
-.applied_filter_container {
-  display: flex;
-  width: max-content;
-  gap: 18px;
-  font-size: 0.875rem;
-  border: 1px dashed var(--card-border);
-  padding: 2px 4px;
-}
-
-.from_to_container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.from_to_container > span {
-  color: var(--foreground-muted);
-}
-
-.from_to_container > span:not(:first-child) {
-  padding-left: 4px;
-}
-
 .average_row {
   border-top: 1px solid var(--card-border);
   font-weight: 600;
@@ -51,6 +9,20 @@
   gap: 4px;
 }
 
+.average_link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: fit-content;
+  color: var(--accent);
+  transition: color 0.2s ease;
+}
+
+.average_link:hover {
+  color: var(--foreground);
+  text-shadow: none;
+}
+
 .average_label small,
 .average_empty {
   color: var(--foreground-muted);
@@ -59,14 +31,6 @@
 
 .average_empty {
   margin: 0;
-}
-
-.accent_link {
-  color: var(--accent);
-}
-
-.accent_link:hover {
-  text-shadow: none;
 }
 
 .uxMessage {
@@ -109,19 +73,6 @@
 .readings_table .header {
   padding: 0 0 16px 0;
   color: var(--foreground-muted);
-}
-
-.date_time_header {
-  width: fit-content;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: color 0.2s ease;
-}
-
-.date_time_header:hover {
-  color: var(--foreground);
-  cursor: pointer;
 }
 
 .value {

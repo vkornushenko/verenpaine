@@ -1,0 +1,200 @@
+.chartContainer {
+  width: 100%;
+  min-width: 0;
+  color: var(--foreground);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.875rem;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  outline-offset: 3px;
+}
+
+.legendMarker {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.plot {
+  position: relative;
+}
+
+.gridLine {
+  stroke: var(--card-border);
+  stroke-dasharray: 3 5;
+}
+
+.axis {
+  stroke: var(--foreground-muted);
+}
+
+.tickLabel {
+  fill: var(--foreground-muted);
+  font-size: 11px;
+}
+
+.axisLabel {
+  fill: var(--foreground);
+  font-size: 12px;
+}
+
+.chart .seriesLine {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart g {
+  transition: opacity 150ms ease;
+}
+
+.chart .inactiveSeries {
+  opacity: 0.4;
+}
+
+.point {
+  stroke: var(--card-bg);
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  width: min(24rem, calc(100vw - 32px));
+  max-width: calc(100% - 16px);
+  max-height: 18rem;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 18%);
+}
+
+.tooltipLeft.tooltipAbove {
+  transform: translate(calc(-100% - 10px), calc(-100% - 10px));
+}
+
+.tooltipLeft.tooltipBelow {
+  transform: translate(calc(-100% - 10px), 10px);
+}
+
+.tooltipAbove {
+  transform: translate(10px, calc(-100% - 10px));
+}
+
+.tooltipBelow {
+  transform: translate(10px, 10px);
+}
+
+.tooltipReadings {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tooltipHeader,
+.tooltipReading {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) repeat(3, minmax(2.5rem, max-content));
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.tooltipHeader {
+  padding: 2px 4px 4px;
+  color: var(--foreground-muted);
+  font-size: 0.75rem;
+}
+
+.tooltipHeader span:not(:first-child),
+.tooltipReading span {
+  text-align: center;
+}
+
+.tooltipReading {
+  padding: 5px 4px;
+  border-radius: 3px;
+  color: var(--foreground);
+  font-size: 0.75rem;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.tooltipReading time {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.tooltipReading span {
+  white-space: nowrap;
+}
+
+.tooltipReading:hover,
+.tooltipReading:focus-visible {
+  background-color: color-mix(in srgb, var(--card-bg) 95%, white);
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.systolic {
+  stroke: #0072b2;
+  fill: #0072b2;
+  background-color: #0072b2;
+}
+
+.diastolic {
+  stroke: #e69f00;
+  fill: #e69f00;
+  background-color: #e69f00;
+}
+
+.pulse {
+  stroke: #cc79a7;
+  fill: #cc79a7;
+  background-color: #cc79a7;
+}
+
+.readingCount {
+  margin: 8px 0 0;
+  color: var(--foreground-muted);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 540px) {
+  .tickLabel {
+    font-size: 9px;
+  }
+
+  .axisLabel {
+    font-size: 10px;
+  }
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState, useRef } from 'react';
-import { sendMeasurement } from '@/services/measurements';
+import { sendMeasurement } from '@/actions/measurements';
 import { formatDateTimeLocal } from '@/lib/date';
 import useFormMessageVisibility from '@/hooks/useFormMessageVisibility';
 import FormStatusMessage from '@/components/UI/FormStatusMessage';

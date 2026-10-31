@@ -25,5 +25,5 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   // path array to apply the rules
-  matcher: ['/', '/account', '/measurement/:id'],
+  matcher: ['/', '/account', '/measurement/:id', '/analytics'],
 };
