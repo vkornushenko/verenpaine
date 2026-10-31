@@ -4,6 +4,7 @@ import { fetchData, fetchResponse } from '@/lib/api';
 import {
   MeasurementActionState,
   MeasurementsResponse,
+  AverageMeasurements,
   type Measurement,
   type tagName,
 } from '@/types/types';
@@ -36,6 +37,25 @@ export async function getReadings(options: GetReadingsOptions = {}) {
       method: 'GET',
       next: { tags: [tagName] },
       // cache: 'force-cache',
+    },
+  );
+}
+
+export async function getAverageReadings(
+  options: Pick<GetReadingsOptions, 'start' | 'end'> = {},
+) {
+  const params = new URLSearchParams();
+  Object.entries(options).forEach(([key, value]) => {
+    if (value !== undefined) {
+      params.set(key, value);
+    }
+  });
+
+  return fetchData<AverageMeasurements>(
+    `/api/v1/measurements/average?${params.toString()}`,
+    {
+      method: 'GET',
+      next: { tags: ['readings'] },
     },
   );
 }

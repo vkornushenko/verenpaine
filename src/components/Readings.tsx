@@ -1,7 +1,11 @@
 'use client';
 
 import styles from '@/components/Readings.module.css';
-import { type FilterName, type Measurement } from '@/types/types';
+import {
+  type AverageMeasurements,
+  type FilterName,
+  type Measurement,
+} from '@/types/types';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { LuCalendarSearch, LuX } from 'react-icons/lu';
@@ -15,6 +19,7 @@ type ReadingsProps = {
   readingsCount: number;
   page: number;
   perPage: number;
+  averages: AverageMeasurements;
 };
 
 const options: Intl.DateTimeFormatOptions = {
@@ -36,6 +41,7 @@ export default function Readings({
   readingsCount,
   page,
   perPage,
+  averages,
 }: ReadingsProps) {
   // local stands for local timeZone
   const [localReadings, setLocalReadings] = useState<Measurement[] | null>(
@@ -127,6 +133,30 @@ export default function Readings({
           </Link>
         </div>
       )}
+      <section
+        className={styles.averages_container}
+        aria-label='Average measurements'
+      >
+        <h3>Average measurements</h3>
+        {averages.measurementCount > 0 ? (
+          <>
+            <div className={styles.averages_values}>
+              <span>
+                sys <strong>{averages.systolic?.toFixed(1)}</strong>
+              </span>
+              <span>
+                dia <strong>{averages.diastolic?.toFixed(1)}</strong>
+              </span>
+              <span>
+                pulse <strong>{averages.pulse?.toFixed(1)}</strong>
+              </span>
+            </div>
+            <p>Across {averages.measurementCount} readings</p>
+          </>
+        ) : (
+          <p>No readings to average</p>
+        )}
+      </section>
       {localReadings && localReadings.length > 0 ? (
         <>
           <ul className={styles.readings_table}>

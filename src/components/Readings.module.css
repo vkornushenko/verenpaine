@@ -40,6 +40,38 @@
   padding-left: 4px;
 }
 
+.averages_container {
+  margin: 16px 0;
+  padding: 12px;
+  border: 1px solid var(--card-border);
+}
+
+.averages_container h3,
+.averages_container p {
+  margin: 0;
+}
+
+.averages_container h3 {
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+}
+
+.averages_values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.averages_values strong {
+  margin-left: 4px;
+}
+
+.averages_container p {
+  margin-top: 6px;
+  color: var(--foreground-muted);
+  font-size: 0.75rem;
+}
+
 .accent_link {
   color: var(--accent);
 }

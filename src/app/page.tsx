@@ -1,7 +1,7 @@
 import Readings from '@/components/Readings';
 import NewReadingForm from '@/components/NewReadingForm';
 import Card from '@/components/UI/Card';
-import { getReadings } from '@/services/measurements';
+import { getAverageReadings, getReadings } from '@/services/measurements';
 import { Activity } from 'react';
 
 export default async function Home({
@@ -18,13 +18,16 @@ export default async function Home({
   const start = params.from;
   const end = params.to;
 
-  const { data, totalMeasurements } = await getReadings({
-    page,
-    perPage,
-    start,
-    end,
-    sort: 'desc',
-  });
+  const [{ data, totalMeasurements }, averages] = await Promise.all([
+    getReadings({
+      page,
+      perPage,
+      start,
+      end,
+      sort: 'desc',
+    }),
+    getAverageReadings({ start, end }),
+  ]);
 
   return (
     <>
@@ -38,6 +41,7 @@ export default async function Home({
             readingsCount={totalMeasurements}
             page={page}
             perPage={perPage}
+            averages={averages}
           />
         </Card>
       </Activity>

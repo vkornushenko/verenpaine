@@ -26,6 +26,13 @@ export type MeasurementsResponse = {
   totalMeasurements: number;
 };
 
+export type AverageMeasurements = {
+  systolic: number | null;
+  diastolic: number | null;
+  pulse: number | null;
+  measurementCount: number;
+};
+
 export type Token = string;
 
 export type tagName = 'reading' | 'readings' | 'user';
