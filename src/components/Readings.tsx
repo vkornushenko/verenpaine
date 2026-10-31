@@ -133,30 +133,6 @@ export default function Readings({
           </Link>
         </div>
       )}
-      <section
-        className={styles.averages_container}
-        aria-label='Average measurements'
-      >
-        <h3>Average measurements</h3>
-        {averages.measurementCount > 0 ? (
-          <>
-            <div className={styles.averages_values}>
-              <span>
-                sys <strong>{averages.systolic?.toFixed(1)}</strong>
-              </span>
-              <span>
-                dia <strong>{averages.diastolic?.toFixed(1)}</strong>
-              </span>
-              <span>
-                pulse <strong>{averages.pulse?.toFixed(1)}</strong>
-              </span>
-            </div>
-            <p>Across {averages.measurementCount} readings</p>
-          </>
-        ) : (
-          <p>No readings to average</p>
-        )}
-      </section>
       {localReadings && localReadings.length > 0 ? (
         <>
           <ul className={styles.readings_table}>
@@ -186,10 +162,36 @@ export default function Readings({
                 </Link>
               </li>
             ))}
-
-            {/* {localReadings.map((reading) => (
-              <Reading key={reading._id} reading={reading} />
-            ))} */}
+            <li
+              className={`${styles.row} ${styles.average_row}`}
+              aria-label='Average measurements'
+            >
+              <span className={styles.average_label}>
+                Average measurements
+                <small>Across {averages.measurementCount} readings</small>
+              </span>
+              <span className={styles.value}>
+                <strong>
+                  {averages.systolic === null
+                    ? '—'
+                    : Math.round(averages.systolic)}
+                </strong>
+              </span>
+              <span className={styles.value}>
+                <strong>
+                  {averages.diastolic === null
+                    ? '—'
+                    : Math.round(averages.diastolic)}
+                </strong>
+              </span>
+              <span className={styles.value}>
+                <strong>
+                  {averages.pulse === null
+                    ? '—'
+                    : Math.round(averages.pulse)}
+                </strong>
+              </span>
+            </li>
           </ul>
 
           {pages.length > 1 ? (
@@ -214,7 +216,10 @@ export default function Readings({
           ) : undefined}
         </>
       ) : (
-        <p className={styles.uxMessage}>{uxMessage}</p>
+        <>
+          <p className={styles.uxMessage}>{uxMessage}</p>
+          <p className={styles.average_empty}>No readings to average</p>
+        </>
       )}
       {isOpenFilter && (
         <OverlayFilter
